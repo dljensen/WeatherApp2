@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Weather App 1</string>
+    <string name="zip">Zip Code:</string>
+    <string name="location">Current Location: </string>
+    <string name="time">Current Time: </string>
+    <string name="conditions">Current Conditions: </string>
+    <string name="metric">Metric</string>
+    <string name="imperial">Imperial</string>
+    <string name="temp">Temperature</string>
+    <string name="dew">Dew Point Temp</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="visiblity">Visibility</string>
+    <string name="wSpeed">Wind Speed</string>
+    <string name="gusts">Gusts</string>
+</resources>

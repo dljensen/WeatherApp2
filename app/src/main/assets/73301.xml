@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dwml version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://graphical.weather.gov/xml/DWMLgen/schema/DWML.xsd">
+  <head>
+    <product concise-name="dwmlByDay" operational-mode="developmental" srsName="WGS 1984">
+      <creation-date refresh-frequency='PT1H'>2016-04-09T14:34:56-05:00</creation-date>
+     <category>current observations and forecast</category>
+    </product>
+    <source>
+      <production-center>Austin/San Antonio, TX</production-center>
+      <credit>http://www.srh.noaa.gov/ewx</credit>
+      <more-information>http://www.nws.noaa.gov/forecasts/xml/</more-information>
+    </source>
+  </head>
+  <data type="forecast">
+
+  <location>
+    <location-key>point1</location-key>
+    <point latitude="30.22" longitude="-97.74"/>
+    <area-description>3 Miles S Austin TX</area-description>
+    <height datum="mean sea level" height-units="feet">548</height>
+  </location>
+<moreWeatherInformation applicable-location="point1">http://forecast.weather.gov/MapClick.php?lat=30.22&amp;lon=-97.74</moreWeatherInformation>
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p12h-n13-1</layout-key>
+      <start-valid-time period-name="This Afternoon">2016-04-09T15:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Tonight">2016-04-09T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Sunday">2016-04-10T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Sunday Night">2016-04-10T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Monday">2016-04-11T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Monday Night">2016-04-11T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Tuesday">2016-04-12T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Tuesday Night">2016-04-12T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Wednesday">2016-04-13T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Wednesday Night">2016-04-13T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Thursday">2016-04-14T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Thursday Night">2016-04-14T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Friday">2016-04-15T06:00:00-05:00</start-valid-time>
+  </time-layout>
+
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p24h-n7-1</layout-key>
+      <start-valid-time period-name="This Afternoon">2016-04-09T15:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Sunday">2016-04-10T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Monday">2016-04-11T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Tuesday">2016-04-12T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Wednesday">2016-04-13T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Thursday">2016-04-14T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Friday">2016-04-15T06:00:00-05:00</start-valid-time>
+  </time-layout>
+
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p24h-n6-2</layout-key>
+      <start-valid-time period-name="Tonight">2016-04-09T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Sunday Night">2016-04-10T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Monday Night">2016-04-11T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Tuesday Night">2016-04-12T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Wednesday Night">2016-04-13T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Thursday Night">2016-04-14T18:00:00-05:00</start-valid-time>
+  </time-layout>
+
+
+  <parameters applicable-location="point1">
+
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p24h-n7-1">
+      <name>Daily Maximum Temperature</name>
+        <value>79</value>
+        <value>81</value>
+        <value>85</value>
+        <value>77</value>
+        <value>69</value>
+        <value>77</value>
+        <value>81</value>
+    </temperature>
+
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p24h-n6-2">
+      <name>Daily Minimum Temperature</name>
+        <value>62</value>
+        <value>68</value>
+        <value>58</value>
+        <value>59</value>
+        <value>53</value>
+        <value>57</value>
+    </temperature>
+
+    <probability-of-precipitation  type="12 hour" units="percent" time-layout="k-p12h-n13-1">
+      <name>12 Hourly Probability of Precipitation</name>
+        <value>30</value>
+        <value>30</value>
+        <value xsi:nil="true"></value>
+        <value>30</value>
+        <value>30</value>
+        <value xsi:nil="true"></value>
+        <value>20</value>
+        <value>60</value>
+        <value>50</value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+    </probability-of-precipitation>
+
+    <weather time-layout="k-p12h-n13-1">
+      <name>Weather Type, Coverage, Intensity</name>
+        <weather-conditions weather-summary="Chance T-storms"/>
+        <weather-conditions weather-summary="Chance T-storms then Mostly Cloudy"/>
+        <weather-conditions weather-summary="Mostly Cloudy"/>
+        <weather-conditions weather-summary="Chance T-storms"/>
+        <weather-conditions weather-summary="Chance T-storms"/>
+        <weather-conditions weather-summary="Partly Cloudy"/>
+        <weather-conditions weather-summary="Slight Chance T-storms"/>
+        <weather-conditions weather-summary="T-storms Likely"/>
+        <weather-conditions weather-summary="Chance T-storms"/>
+        <weather-conditions weather-summary="Mostly Cloudy"/>
+        <weather-conditions weather-summary="Mostly Sunny"/>
+        <weather-conditions weather-summary="Partly Cloudy"/>
+        <weather-conditions weather-summary="Mostly Sunny"/>
+    </weather>
+
+    <conditions-icon type="forecast-NWS" time-layout="k-p12h-n13-1">
+      <name>Conditions Icon</name>        <icon-link>http://forecast.weather.gov/newimages/medium/scttsra30.png</icon-link>
+        <icon-link>http://forecast.weather.gov/DualImage.php?i=nscttsra&amp;j=nbkn&amp;ip=30</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/bkn.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/ntsra30.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/scttsra30.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nsct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/hi_tsra20.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/ntsra60.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/tsra50.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nbkn.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/sct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nsct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/sct.png</icon-link>
+    </conditions-icon>
+
+    <wordedForecast time-layout="k-p12h-n13-1" dataSource="ewxNetcdf" wordGenerator="markMitchell">
+      <name>Text Forecast</name>
+        <text>A 30 percent chance of showers and thunderstorms.  Partly sunny, with a high near 79. South wind 10 to 15 mph. </text>
+        <text>A 30 percent chance of showers and thunderstorms before 7pm.  Mostly cloudy, with a low around 62. South southeast wind 10 to 15 mph. </text>
+        <text>Mostly cloudy, with a high near 81. South wind 10 to 15 mph, with gusts as high as 20 mph. </text>
+        <text>A 30 percent chance of showers and thunderstorms.  Mostly cloudy, with a low around 68. South southeast wind around 15 mph, with gusts as high as 20 mph. </text>
+        <text>A 30 percent chance of showers and thunderstorms.  Partly sunny, with a high near 85. Southwest wind 10 to 15 mph. </text>
+        <text>Partly cloudy, with a low around 58. Southwest wind 5 to 10 mph becoming north after midnight. </text>
+        <text>A 20 percent chance of showers and thunderstorms.  Mostly sunny, with a high near 77. North wind 10 to 15 mph. </text>
+        <text>Showers and thunderstorms likely.  Mostly cloudy, with a low around 59. East northeast wind 5 to 10 mph.  Chance of precipitation is 60%.</text>
+        <text>A 50 percent chance of showers and thunderstorms.  Cloudy, with a high near 69. Northeast wind around 10 mph. </text>
+        <text>Mostly cloudy, with a low around 53.</text>
+        <text>Mostly sunny, with a high near 77.</text>
+        <text>Partly cloudy, with a low around 57.</text>
+        <text>Mostly sunny, with a high near 81.</text>
+    </wordedForecast>
+
+</parameters>
+</data>
+<data type="current observations">
+	<location>
+		<location-key>point1</location-key>
+		<point latitude="30.19" longitude="-97.67"/>
+		<area-description>Austin, Austin-Bergstrom International Airport, TX</area-description>
+		<height datum="mean sea level" height-units="feet">541</height>
+	</location>
+	<moreWeatherInformation applicable-location="point1">http://www.nws.noaa.gov/data/obhistory/KAUS.html</moreWeatherInformation>	<time-layout time-coordinate="local">	<layout-key>k-p1h-n1-1</layout-key>	<start-valid-time period-name="current">2016-04-09T14:53:00-05:00</start-valid-time>	</time-layout>	<parameters applicable-location="point1">	<temperature type="apparent" units="Fahrenheit" time-layout="k-p1h-n1-1">	<value>72</value>	</temperature>	<temperature type="dew point" units="Fahrenheit" time-layout="k-p1h-n1-1">	<value>56</value>	</temperature>	<humidity type="relative" time-layout="k-p1h-n1-1">	<value>57</value>	</humidity>	<weather time-layout="k-p1h-n1-1">	<name>Weather Type, Coverage, Intensity</name>	<weather-conditions weather-summary="Overcast"/>	<weather-conditions>	<value>	<visibility units="statute miles">10.00</visibility>	</value>	</weather-conditions>	</weather>	<conditions-icon type="forecast-NWS" time-layout="k-p1h-n1-1">	<name>Conditions Icon</name>	<icon-link>http://forecast.weather.gov/newimages/medium/ovc.png</icon-link>	</conditions-icon>	<direction type="wind" units="degrees true" time-layout="k-p1h-n1-1">	<value>120</value>	</direction>	<wind-speed type="gust" units="knots" time-layout="k-p1h-n1-1">	<value>NA</value>	</wind-speed>	<wind-speed type="sustained" units="knots" time-layout="k-p1h-n1-1">	<value>7</value>	</wind-speed>		<pressure type="barometer" units="inches of mercury" time-layout="k-p1h-n1-1">			<value>30.09</value>		</pressure>	</parameters></data></dwml>

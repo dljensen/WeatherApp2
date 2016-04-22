@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/zip"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/zipSearch"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/searchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/locationLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:padding="10dp"
+            android:text="@string/location" />
+
+        <TextView
+            android:id="@+id/timeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/locationLabel"
+            android:padding="10dp"
+            android:text="@string/time" />
+
+        <TextView
+            android:id="@+id/conditionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image"
+            android:layout_toRightOf="@+id/humidityLabel"
+            android:padding="5dp"
+            android:text="@string/conditions" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/timeResult"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/img_10024"
+            android:gravity="center" />
+
+
+        <RadioGroup
+            android:id="@+id/group"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/timeLabel"
+            android:layout_marginTop="34dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <RadioButton
+                android:id="@+id/imperialBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="89dp"
+                android:checked="true"
+                android:onClick="changeUnits"
+                android:padding="10dp"
+                android:text="@string/imperial" />
+
+
+            <RadioButton
+                android:id="@+id/metricBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:checked="false"
+                android:onClick="changeUnits"
+                android:padding="10dp"
+                android:text="@string/metric" />
+        </RadioGroup>
+
+
+        <TextView
+            android:id="@+id/tempLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/group"
+            android:paddingLeft="10dp"
+            android:text="@string/temp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tempResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tempLabel"
+            android:paddingLeft="10dp"
+            android:text="--" />
+
+        <TextView
+            android:id="@+id/dewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tempResult"
+            android:paddingLeft="10dp"
+            android:text="@string/dew"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dewResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dewLabel"
+            android:paddingLeft="10dp"
+            android:text="--" />
+
+        <TextView
+            android:id="@+id/humidityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/dewResult"
+            android:paddingLeft="10dp"
+            android:text="@string/humidity"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/humidityResults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/humidityLabel"
+            android:paddingLeft="10dp"
+            android:text="--" />
+
+        <TextView
+            android:id="@+id/pressureLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/humidityResults"
+            android:paddingLeft="10dp"
+            android:text="@string/pressure"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/pressureResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/pressureLabel"
+            android:paddingLeft="10dp"
+            android:text="--" />
+
+        <TextView
+            android:id="@+id/visibilityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tempResult"
+            android:layout_toEndOf="@+id/image"
+            android:layout_toRightOf="@+id/image"
+            android:paddingRight="10dp"
+            android:text="@string/visiblity"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/wSpeedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dewResult"
+            android:layout_alignLeft="@+id/visibilityResult"
+            android:layout_alignStart="@+id/visibilityResult"
+            android:paddingRight="10dp"
+            android:text="@string/wSpeed"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/visibilityResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/visibilityLabel"
+            android:layout_toRightOf="@+id/image"
+            android:paddingRight="10dp"
+            android:text="--" />
+
+        <TextView
+            android:id="@+id/gustLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/windResult"
+            android:layout_alignStart="@+id/windResult"
+            android:layout_below="@+id/windResult"
+            android:paddingRight="10dp"
+            android:text="@string/gusts"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/gustResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/windResult"
+            android:layout_below="@+id/gustLabel"
+            android:paddingRight="10dp"
+            android:text="--" />
+
+        <TextView
+            android:id="@+id/locationResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/locationLabel"
+            android:layout_toRightOf="@+id/locationLabel"
+            android:padding="10dp"
+            android:text="--" />
+
+        <TextView
+            android:id="@+id/timeResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/locationLabel"
+            android:layout_toEndOf="@+id/timeLabel"
+            android:layout_toRightOf="@+id/timeLabel"
+            android:padding="10dp"
+            android:text="--" />
+
+        <TextView
+            android:id="@+id/conditionResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/conditionLabel"
+            android:layout_alignTop="@+id/conditionLabel"
+            android:layout_toEndOf="@+id/conditionLabel"
+            android:layout_toRightOf="@+id/conditionLabel"
+            android:padding="5dp"
+            android:text="--" />
+
+        <TextView
+            android:id="@+id/windResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/wSpeedLabel"
+            android:layout_alignStart="@+id/wSpeedLabel"
+            android:layout_alignTop="@+id/dewResult"
+            android:text="--" />
+
+    </RelativeLayout>
+</LinearLayout>

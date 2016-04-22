@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dwml version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://graphical.weather.gov/xml/DWMLgen/schema/DWML.xsd">
+  <head>
+    <product concise-name="dwmlByDay" operational-mode="developmental" srsName="WGS 1984">
+      <creation-date refresh-frequency='PT1H'>2016-04-09T15:38:13-04:00</creation-date>
+     <category>current observations and forecast</category>
+    </product>
+    <source>
+      <production-center>New York, NY</production-center>
+      <credit>http://weather.gov/okx/</credit>
+      <more-information>http://www.nws.noaa.gov/forecasts/xml/</more-information>
+    </source>
+  </head>
+  <data type="forecast">
+
+  <location>
+    <location-key>point1</location-key>
+    <description>Central Park, NY</description>
+    <point latitude="40.78" longitude="-73.97"/>
+    <city state="NY">Central Park</city>
+    <height datum="mean sea level">82</height>
+  </location>
+<moreWeatherInformation applicable-location="point1">http://forecast.weather.gov/MapClick.php?lat=40.78&amp;lon=-73.97</moreWeatherInformation>
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p6h-n1-1</layout-key>      <start-valid-time>2016-04-09T16:00:00-04:00</start-valid-time>
+      <end-valid-time>2016-04-16T18:00:00-04:00</end-valid-time>
+  </time-layout>
+
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p12h-n15-1</layout-key>
+      <start-valid-time period-name="This Afternoon">2016-04-09T16:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Tonight">2016-04-09T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Sunday">2016-04-10T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Sunday Night">2016-04-10T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Monday">2016-04-11T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Monday Night">2016-04-11T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Tuesday">2016-04-12T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Tuesday Night">2016-04-12T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Wednesday">2016-04-13T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Wednesday Night">2016-04-13T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Thursday">2016-04-14T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Thursday Night">2016-04-14T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Friday">2016-04-15T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Friday Night">2016-04-15T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Saturday">2016-04-16T06:00:00-04:00</start-valid-time>
+  </time-layout>
+
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p24h-n8-1</layout-key>
+      <start-valid-time period-name="This Afternoon">2016-04-09T16:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Sunday">2016-04-10T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Monday">2016-04-11T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Tuesday">2016-04-12T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Wednesday">2016-04-13T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Thursday">2016-04-14T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Friday">2016-04-15T06:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Saturday">2016-04-16T06:00:00-04:00</start-valid-time>
+  </time-layout>
+
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p24h-n7-2</layout-key>
+      <start-valid-time period-name="Tonight">2016-04-09T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Sunday Night">2016-04-10T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Monday Night">2016-04-11T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Tuesday Night">2016-04-12T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Wednesday Night">2016-04-13T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Thursday Night">2016-04-14T18:00:00-04:00</start-valid-time>
+      <start-valid-time period-name="Friday Night">2016-04-15T18:00:00-04:00</start-valid-time>
+  </time-layout>
+
+
+  <parameters applicable-location="point1">
+
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p24h-n8-1">
+      <name>Daily Maximum Temperature</name>
+        <value>38</value>
+        <value>47</value>
+        <value>58</value>
+        <value>54</value>
+        <value>54</value>
+        <value>60</value>
+        <value>59</value>
+        <value>63</value>
+    </temperature>
+
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p24h-n7-2">
+      <name>Daily Minimum Temperature</name>
+        <value>31</value>
+        <value>40</value>
+        <value>56</value>
+        <value>38</value>
+        <value>40</value>
+        <value>42</value>
+        <value>43</value>
+    </temperature>
+
+    <probability-of-precipitation  type="12 hour" units="percent" time-layout="k-p12h-n15-1">
+      <name>12 Hourly Probability of Precipitation</name>
+        <value>90</value>
+        <value>80</value>
+        <value xsi:nil="true"></value>
+        <value>20</value>
+        <value>40</value>
+        <value>30</value>
+        <value>80</value>
+        <value>50</value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+    </probability-of-precipitation>
+
+    <weather time-layout="k-p12h-n15-1">
+      <name>Weather Type, Coverage, Intensity</name>
+        <weather-conditions weather-summary="Rain/Snow"/>
+        <weather-conditions weather-summary="Rain/Snow then Mostly Cloudy"/>
+        <weather-conditions weather-summary="Increasing Clouds"/>
+        <weather-conditions weather-summary="Mostly Cloudy then Slight Chance Light Rain"/>
+        <weather-conditions weather-summary="Chance Light Rain"/>
+        <weather-conditions weather-summary="Chance Rain"/>
+        <weather-conditions weather-summary="Rain"/>
+        <weather-conditions weather-summary="Chance Rain then Mostly Cloudy"/>
+        <weather-conditions weather-summary="Mostly Sunny"/>
+        <weather-conditions weather-summary="Partly Cloudy"/>
+        <weather-conditions weather-summary="Sunny"/>
+        <weather-conditions weather-summary="Partly Cloudy"/>
+        <weather-conditions weather-summary="Mostly Sunny"/>
+        <weather-conditions weather-summary="Partly Cloudy"/>
+        <weather-conditions weather-summary="Mostly Sunny"/>
+    </weather>
+
+    <conditions-icon type="forecast-NWS" time-layout="k-p12h-n15-1">
+      <name>Conditions Icon</name>        <icon-link>http://forecast.weather.gov/newimages/medium/ra_sn90.png</icon-link>
+        <icon-link>http://forecast.weather.gov/DualImage.php?i=nra_sn&amp;j=nbkn&amp;ip=80</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/sct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/DualImage.php?i=nbkn&amp;j=nra&amp;jp=20</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/ra40.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nra30.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/ra80.png</icon-link>
+        <icon-link>http://forecast.weather.gov/DualImage.php?i=nra&amp;j=nbkn&amp;ip=50</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/sct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nsct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/few.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nsct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/sct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nsct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/sct.png</icon-link>
+    </conditions-icon>
+
+    <hazards time-layout="k-p6h-n1-1">
+      <name>Watches, Warnings, and Advisories</name>
+      <hazard-conditions>
+        <hazard headline="Freeze Warning">
+          <hazardTextURL>http://forecast.weather.gov/showsigwx.php?warnzone=NYZ072&amp;warncounty=NYC061&amp;firewxzone=NYZ072&amp;local_place1=Central+Park+NY&amp;product1=Freeze+Warning</hazardTextURL>
+        </hazard>
+      </hazard-conditions>
+    </hazards>
+
+    <hazards time-layout="">
+      <name>Watches, Warnings, and Advisories</name>
+      <hazard-conditions>
+        <hazard headline="Hazardous Weather Outlook">
+          <hazardTextURL>http://forecast.weather.gov/showsigwx.php?warnzone=NYZ072&amp;warncounty=NYC061&amp;firewxzone=NYZ072&amp;local_place1=Central+Park+NY&amp;product1=Hazardous+Weather+Outlook</hazardTextURL>
+        </hazard>
+      </hazard-conditions>
+    </hazards>
+
+    <wordedForecast time-layout="k-p12h-n15-1" dataSource="okxNetcdf" wordGenerator="markMitchell">
+      <name>Text Forecast</name>
+        <text>Rain and snow.  Steady temperature around 38. North wind around 11 mph.  Chance of precipitation is 90%. Total daytime snow accumulation of less than a half inch possible. </text>
+        <text>Rain and snow, mainly before 10pm.  Low around 31. Wind chill values between 20 and 25. Northwest wind 14 to 17 mph.  Chance of precipitation is 80%. New snow accumulation of less than a half inch possible. </text>
+        <text>Increasing clouds, with a high near 47. Wind chill values between 20 and 30 early. Northwest wind around 9 mph becoming southwest in the afternoon. </text>
+        <text>A slight chance of light rain after 1am.  Mostly cloudy, with a low around 40. South wind 8 to 10 mph.  Chance of precipitation is 20%.</text>
+        <text>A chance of light rain.  Cloudy, with a high near 58. South wind 13 to 15 mph.  Chance of precipitation is 40%.</text>
+        <text>A chance of rain, mainly after 1am.  Cloudy, with a steady temperature around 56. Chance of precipitation is 30%.</text>
+        <text>Rain.  High near 54. Chance of precipitation is 80%.</text>
+        <text>A chance of rain before midnight.  Mostly cloudy, with a low around 38. Chance of precipitation is 50%.</text>
+        <text>Mostly sunny, with a high near 54.</text>
+        <text>Partly cloudy, with a low around 40.</text>
+        <text>Sunny, with a high near 60.</text>
+        <text>Partly cloudy, with a low around 42.</text>
+        <text>Mostly sunny, with a high near 59.</text>
+        <text>Partly cloudy, with a low around 43.</text>
+        <text>Mostly sunny, with a high near 63.</text>
+    </wordedForecast>
+
+</parameters>
+</data>
+<data type="current observations">
+	<location>
+		<location-key>point1</location-key>
+		<point latitude="40.78" longitude="-73.97"/>
+		<area-description>New York City, Central Park, NY</area-description>
+		<height datum="mean sea level" height-units="feet">154</height>
+	</location>
+	<moreWeatherInformation applicable-location="point1">http://www.nws.noaa.gov/data/obhistory/KNYC.html</moreWeatherInformation>	<time-layout time-coordinate="local">	<layout-key>k-p1h-n1-1</layout-key>	<start-valid-time period-name="current">2016-04-09T15:51:00-04:00</start-valid-time>	</time-layout>	<parameters applicable-location="point1">	<temperature type="apparent" units="Fahrenheit" time-layout="k-p1h-n1-1">	<value>38</value>	</temperature>	<temperature type="dew point" units="Fahrenheit" time-layout="k-p1h-n1-1">	<value>33</value>	</temperature>	<humidity type="relative" time-layout="k-p1h-n1-1">	<value>83</value>	</humidity>	<weather time-layout="k-p1h-n1-1">	<name>Weather Type, Coverage, Intensity</name>	<weather-conditions weather-summary=" Light Rain"/>	<weather-conditions>	<value>	<visibility units="statute miles">4.00</visibility>	</value>	</weather-conditions>	</weather>	<conditions-icon type="forecast-NWS" time-layout="k-p1h-n1-1">	<name>Conditions Icon</name>	<icon-link>http://forecast.weather.gov/newimages/medium/ra.png</icon-link>	</conditions-icon>	<direction type="wind" units="degrees true" time-layout="k-p1h-n1-1">	<value>999</value>	</direction>	<wind-speed type="gust" units="knots" time-layout="k-p1h-n1-1">	<value>NA</value>	</wind-speed>	<wind-speed type="sustained" units="knots" time-layout="k-p1h-n1-1">	<value>6</value>	</wind-speed>		<pressure type="barometer" units="inches of mercury" time-layout="k-p1h-n1-1">			<value>29.77</value>		</pressure>	</parameters></data></dwml>
