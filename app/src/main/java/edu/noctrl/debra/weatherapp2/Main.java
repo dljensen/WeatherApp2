@@ -65,10 +65,6 @@ public class Main extends AppCompatActivity {
                 }
                 results = weatherIO.loadFromAsset(manager, zip + ".xml");
 
-                System.out.println("Time is " + results.current.timestamp);
-                System.out.println("Current Conditions: "+ results.current.summary);
-                System.out.println("Image URL is " + results.current.imageUrl);
-                System.out.println("Location: " + results.location.name);
                 setFields(true);   //start in default imperial mode
 
             }
@@ -85,20 +81,27 @@ public class Main extends AppCompatActivity {
         return true;
     }
 
-    @Override
+    @Override //what to do when the menu item is selected
     public boolean onOptionsItemSelected(MenuItem mi){
         switch(mi.getItemId()){
             case R.id.about:
+                //show a dialog with some source info
+                //www.weather.gov
                 return true;
             case R.id.enter_zipcode:
+                //dialog to enter zipcode
                 return true;
             case R.id.recent_zipcodes:
+                //show last 5 zipcodes entered
                 return true;
             case R.id.weather_current:
+                //show the project 1 activity
                 return true;
             case R.id.weather_7day:
+                //show 7 Day forecast activity
                 return true;
             case R.id.units:
+                //dialog to toggle units
                 return true;
             default:
                 return super.onOptionsItemSelected(mi);
@@ -113,13 +116,11 @@ public class Main extends AppCompatActivity {
         {
             case R.id.metricBtn:
                 if(checked) {
-                    System.out.println("in metric");
                     setFields(false);
                 }
                 break;
             case R.id.imperialBtn:
                 if(checked) {
-                    System.out.println("in imperial");
                     setFields(true);
                 }
                 break;
