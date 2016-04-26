@@ -1,8 +1,8 @@
-Simple Weather Android App for class project
+<h2>Simple Weather Android App for <a href="http://bacraig.faculty.noctrl.edu/project2.html">class project</a></h2>
 
-Assignment Details:
+<h4>Assignment Details:</h4>
 
-In this project you will need to:
+Project Requirements:
 <ol>
 <li> Dynamic Data:
     <ul>
@@ -36,3 +36,8 @@ In this project you will need to:
         <li>Transition between forecast days on user swipe action</li>
     </ul></li>
 </ol>
+
+<h3>Items Completed:</h3>
+<ul>
+    <li>Monday, April 25: Created a drop-down menu. It has no functionality at this point.</li>
+</ul>
