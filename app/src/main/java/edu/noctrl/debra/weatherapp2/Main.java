@@ -4,6 +4,9 @@ package edu.noctrl.debra.weatherapp2;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -72,6 +75,37 @@ public class Main extends AppCompatActivity {
         });
     }
 
+    //Methods for Menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.weather_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem mi){
+        switch(mi.getItemId()){
+            case R.id.about:
+                return true;
+            case R.id.enter_zipcode:
+                return true;
+            case R.id.recent_zipcodes:
+                return true;
+            case R.id.weather_current:
+                return true;
+            case R.id.weather_7day:
+                return true;
+            case R.id.units:
+                return true;
+            default:
+                return super.onOptionsItemSelected(mi);
+        }
+    }
+
+    //method to change the units from imperial to metric
     public void changeUnits(View view)
     {
         boolean checked =((RadioButton) view).isChecked();
@@ -93,6 +127,7 @@ public class Main extends AppCompatActivity {
 
     }
 
+    //method to write weather data to the screen
     public void setFields(boolean mode)
     {
         double myTemp = results.current.temperature;

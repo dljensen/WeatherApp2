@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Enter Zipcode"
+        android:id="@+id/enter_zipcode"
+        />
+    <item
+        android:title="Recent Zipcodes"
+        android:id="@+id/recent_zipcodes"
+        />
+    <item
+        android:title="Current Weather"
+        android:id="@+id/weather_current"
+        />
+    <item
+        android:title="7-day Forecast"
+        android:id="@+id/weather_7day"
+        />
+    <item
+        android:title="Change Units"
+        android:id="@+id/units"
+        />
+    <item
+        android:title="About"
+        android:id="@+id/about"
+        />
+</menu>
