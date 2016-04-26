@@ -2,7 +2,10 @@
 package edu.noctrl.debra.weatherapp2;
 
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-public class Main extends AppCompatActivity {
+public class Main extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener{
    private WeatherInfoIO weatherIO;
     private WeatherInfo results;
     public AssetManager manager;
@@ -31,44 +34,7 @@ public class Main extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-        weatherIO = new WeatherInfoIO();
-        manager = this.getAssets();
 
-        searchBtn = (Button)findViewById(R.id.searchBtn);
-        weatherImg = (ImageView)findViewById(R.id.image);
-
-        searchBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-                zipBox = (EditText) findViewById(R.id.zipSearch);
-                zip = zipBox.getText() + "";
-
-                switch (zip)
-                {
-                    case "10024":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_10024));
-                        break;
-                    case "60540":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_60540));
-                        break;
-                    case "63101":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_63101));
-                        break;
-                    case "73301":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_73301));
-                        break;
-                    case "90001":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_90001));
-                        break;
-
-                }
-                results = weatherIO.loadFromAsset(manager, zip + ".xml");
-
-                setFields(true);   //start in default imperial mode
-
-            }
-        });
     }
 
     //Methods for Menu
@@ -96,6 +62,7 @@ public class Main extends AppCompatActivity {
                 return true;
             case R.id.weather_current:
                 //show the project 1 activity
+                addCurrentFrag();
                 return true;
             case R.id.weather_7day:
                 //show 7 Day forecast activity
@@ -193,4 +160,58 @@ public class Main extends AppCompatActivity {
     }
 
 
+    //add the current fragment
+    public void addCurrentFrag(){
+        FragmentManager fragMan = getSupportFragmentManager();
+        FragmentTransaction trans = fragMan.beginTransaction();
+        trans.add(R.id.main_layout, CurrentFragment.newInstance("string","string"), "New Current");
+        trans.commit();
+    }
+
+    //set up the current activity
+    private void setupCurrent(){
+        weatherIO = new WeatherInfoIO();
+        manager = this.getAssets();
+
+        searchBtn = (Button)findViewById(R.id.searchBtn);
+        weatherImg = (ImageView)findViewById(R.id.image);
+
+        searchBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                zipBox = (EditText) findViewById(R.id.zipSearch);
+                zip = zipBox.getText() + "";
+
+                switch (zip)
+                {
+                    case "10024":
+                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_10024));
+                        break;
+                    case "60540":
+                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_60540));
+                        break;
+                    case "63101":
+                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_63101));
+                        break;
+                    case "73301":
+                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_73301));
+                        break;
+                    case "90001":
+                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_90001));
+                        break;
+
+                }
+                results = weatherIO.loadFromAsset(manager, zip + ".xml");
+
+                setFields(true);   //start in default imperial mode
+
+            }
+        });
+    }
+
+
+    public void onFragmentInteraction(Uri uri){
+
+    }
 }
