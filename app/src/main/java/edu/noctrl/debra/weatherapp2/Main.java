@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,7 +29,6 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     private ImageView weatherImg;
     private TextView location, time, condition, temp, dew, humid, pressure, visibility, speed, gust;
     private RadioButton metric, imperial;
-
     private String zip;
 
     @Override
@@ -59,6 +59,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                 return true;
             case R.id.enter_zipcode:
                 //dialog to enter zipcode
+                enterZipDialog();
                 return true;
             case R.id.recent_zipcodes:
                 //show last 5 zipcodes entered
@@ -72,6 +73,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                 return true;
             case R.id.units:
                 //dialog to toggle units
+                unitsDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(mi);
@@ -81,7 +83,9 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     //method to change the units from imperial to metric
     public void changeUnits(View view)
     {
-        boolean checked =((RadioButton) view).isChecked();
+        //check sharedPreferences instead
+
+       /* boolean checked =((RadioButton) view).isChecked();
         switch(view.getId())
         {
             case R.id.metricBtn:
@@ -94,7 +98,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                     setFields(true);
                 }
                 break;
-        }
+        }*/
 
     }
 
@@ -176,10 +180,10 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         weatherIO = new WeatherInfoIO();
         manager = this.getAssets();
 
-        searchBtn = (Button)findViewById(R.id.searchBtn);
+        //searchBtn = (Button)findViewById(R.id.searchBtn);
         weatherImg = (ImageView)findViewById(R.id.image);
 
-        searchBtn.setOnClickListener(new View.OnClickListener(){
+       /* searchBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
             {
@@ -210,7 +214,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                 setFields(true);   //start in default imperial mode
 
             }
-        });
+        });*/
     }
 
     public void aboutDialog()
@@ -226,6 +230,50 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         builder.show();
     }
 
+    public void enterZipDialog()
+    {
+        //Make edit text for user to enter in
+        final EditText zipInput = new EditText(this);
+        zipInput.setInputType(InputType.TYPE_CLASS_TEXT);
+        //Make alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+        builder.setView(zipInput);
+        builder.setTitle(R.string.enterZipTitle).
+                setPositiveButton(R.string.ok, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        zip= zipInput.getText().toString();
+                        if(zip.equals(""))
+                        {
+                            //create a toast that says bad zip
+                        }
+                    }
+                }).
+        setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id) {
+                //do nothing
+            }
+            });
+        builder.show();
+    }
+
+    public void unitsDialog()
+    {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+        builder.setTitle(R.string.unitTitle).
+                setPositiveButton(R.string.imperial, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        //switch the units to imperial and save in savedPreferences
+
+                    }
+                }).
+                setNegativeButton(R.string.metric, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id) {
+                        //switch the units to metric and save in savedPreferences
+                    }
+                });
+        builder.show();
+    }
     public void onFragmentInteraction(Uri uri){
 
     }

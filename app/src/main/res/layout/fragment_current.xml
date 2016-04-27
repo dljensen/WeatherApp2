@@ -53,47 +53,13 @@
             android:gravity="center" />
 
 
-        <RadioGroup
-            android:id="@+id/group"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/timeLabel"
-            android:layout_marginTop="34dp"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <RadioButton
-                android:id="@+id/imperialBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="89dp"
-                android:checked="true"
-                android:onClick="changeUnits"
-                android:padding="10dp"
-                android:text="@string/imperial" />
-
-
-            <RadioButton
-                android:id="@+id/metricBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:checked="false"
-                android:onClick="changeUnits"
-                android:padding="10dp"
-                android:text="@string/metric" />
-        </RadioGroup>
-
-
         <TextView
             android:id="@+id/tempLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/group"
+            android:layout_below="@+id/conditionLabel"
             android:paddingLeft="10dp"
             android:text="@string/temp"
             android:textStyle="bold" />
