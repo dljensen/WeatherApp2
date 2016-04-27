@@ -39,5 +39,7 @@ Project Requirements:
 
 <h3>Items Completed:</h3>
 <ul>
+    <li>Wednesday, April 27: Created an alert dialog box for about info</li>
+    <li>Tuesday, April 26: Added fragment for Project 1</li>
     <li>Monday, April 25: Created a drop-down menu. It has no functionality at this point.</li>
 </ul>
