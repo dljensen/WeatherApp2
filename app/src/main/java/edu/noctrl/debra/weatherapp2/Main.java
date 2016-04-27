@@ -2,6 +2,7 @@
 package edu.noctrl.debra.weatherapp2;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,29 +14,29 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class Main extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener{
    private WeatherInfoIO weatherIO;
     private WeatherInfo results;
     public AssetManager manager;
-    private Button searchBtn;
-    private EditText zipBox;
     private ImageView weatherImg;
     private TextView location, time, condition, temp, dew, humid, pressure, visibility, speed, gust;
-    private RadioButton metric, imperial;
-    private String zip;
+    private boolean units = true; //boolean for units, initially true to indicate imperial mode
+    private String zip; //string to store the zipcode
+    private SharedPreferences savedItems; // user's favorite searches
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+
+        //ask SharedPreferences for the unit mode
+        savedItems = getSharedPreferences("weather_data", MODE_PRIVATE);
+        units = savedItems.getBoolean("units", true);
 
     }
 
@@ -80,31 +81,12 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         }
     }
 
-    //method to change the units from imperial to metric
-    public void changeUnits(View view)
-    {
-        //check sharedPreferences instead
-
-       /* boolean checked =((RadioButton) view).isChecked();
-        switch(view.getId())
-        {
-            case R.id.metricBtn:
-                if(checked) {
-                    setFields(false);
-                }
-                break;
-            case R.id.imperialBtn:
-                if(checked) {
-                    setFields(true);
-                }
-                break;
-        }*/
-
-    }
 
     //method to write weather data to the screen
-    public void setFields(boolean mode)
+    public void setFields()
     {
+        //CHECK THAT THERE IS A ZIP SAVED
+
         double myTemp = results.current.temperature;
         double myDew = results.current.dewPoint;
         double myPressure = results.current.pressure;
@@ -126,7 +108,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         gust = (TextView) findViewById(R.id.gustResult);
 
         //convert to metric
-        if(!mode)
+        if(!units)
         {
             myTemp = ((int)(((myTemp-32)/1.8)*100))/100.0; //convert to Celsius
             myDew = ((int)(((myDew-32)/1.8)*100))/100.0; //convert to Celsius
@@ -180,41 +162,31 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         weatherIO = new WeatherInfoIO();
         manager = this.getAssets();
 
-        //searchBtn = (Button)findViewById(R.id.searchBtn);
         weatherImg = (ImageView)findViewById(R.id.image);
 
-       /* searchBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-                zipBox = (EditText) findViewById(R.id.zipSearch);
-                zip = zipBox.getText() + "";
+        //switch on the zip code
+        switch (zip)
+        {
+            case "10024":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_10024));
+                break;
+            case "60540":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_60540));
+                break;
+            case "63101":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_63101));
+                break;
+            case "73301":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_73301));
+                break;
+            case "90001":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_90001));
+                break;
 
-                switch (zip)
-                {
-                    case "10024":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_10024));
-                        break;
-                    case "60540":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_60540));
-                        break;
-                    case "63101":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_63101));
-                        break;
-                    case "73301":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_73301));
-                        break;
-                    case "90001":
-                        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_90001));
-                        break;
+        }
+        results = weatherIO.loadFromAsset(manager, zip + ".xml");
 
-                }
-                results = weatherIO.loadFromAsset(manager, zip + ".xml");
-
-                setFields(true);   //start in default imperial mode
-
-            }
-        });*/
+        setFields();   //start in default imperial mode
     }
 
     public void aboutDialog()
@@ -235,24 +207,33 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         //Make edit text for user to enter in
         final EditText zipInput = new EditText(this);
         zipInput.setInputType(InputType.TYPE_CLASS_TEXT);
+
         //Make alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
         builder.setView(zipInput);
         builder.setTitle(R.string.enterZipTitle).
                 setPositiveButton(R.string.ok, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
+                        //collect the user input
                         zip= zipInput.getText().toString();
-                        if(zip.equals(""))
+
+                        if(zip.equals("") || zip.length() > 5)
                         {
                             //create a toast that says bad zip
+                            //call enterZipDialog again to re-prompt
+                            enterZipDialog();
+                        }
+                        else {
+                            //call the search function
+                            setupCurrent();
                         }
                     }
                 }).
-        setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int id) {
-                //do nothing
-            }
-            });
+                setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id) {
+                        //do nothing
+                    }
+                });
         builder.show();
     }
 
@@ -264,12 +245,28 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                 setPositiveButton(R.string.imperial, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         //switch the units to imperial and save in savedPreferences
+                        units = true;
+
+                        // get a SharedPreferences.Editor to edit the units
+                        SharedPreferences.Editor preferencesEditor = savedItems.edit();
+                        preferencesEditor.putBoolean("units", true); // store current search
+                        preferencesEditor.apply(); // store the updated preferences
+
+                        setFields();
 
                     }
                 }).
                 setNegativeButton(R.string.metric, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id) {
                         //switch the units to metric and save in savedPreferences
+                        units = false;
+
+                        // get a SharedPreferences.Editor to edit the units
+                        SharedPreferences.Editor preferencesEditor = savedItems.edit();
+                        preferencesEditor.putBoolean("units", false); // store current search
+                        preferencesEditor.apply(); // store the updated preferences
+
+                        setFields();
                     }
                 });
         builder.show();

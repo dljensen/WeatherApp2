@@ -12,7 +12,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="right|center_vertical">
 
         <TextView
             android:id="@+id/locationLabel"
@@ -57,94 +58,98 @@
             android:id="@+id/tempLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/conditionLabel"
             android:paddingLeft="10dp"
             android:text="@string/temp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_below="@+id/conditionLabel"
+            android:layout_alignLeft="@+id/tempResult"
+            android:layout_alignStart="@+id/tempResult" />
 
         <TextView
             android:id="@+id/tempResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/tempLabel"
             android:paddingLeft="10dp"
-            android:text="--" />
+            android:text="--"
+            android:layout_below="@+id/tempLabel"
+            android:layout_alignLeft="@+id/humidityResults"
+            android:layout_alignStart="@+id/humidityResults" />
 
         <TextView
             android:id="@+id/dewLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/tempResult"
             android:paddingLeft="10dp"
             android:text="@string/dew"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_below="@+id/tempResult"
+            android:layout_alignLeft="@+id/dewResult"
+            android:layout_alignStart="@+id/dewResult" />
 
         <TextView
             android:id="@+id/dewResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dewLabel"
             android:paddingLeft="10dp"
-            android:text="--" />
+            android:text="--"
+            android:layout_below="@+id/dewLabel"
+            android:layout_alignLeft="@+id/humidityLabel"
+            android:layout_alignStart="@+id/humidityLabel" />
 
         <TextView
             android:id="@+id/humidityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/dewResult"
             android:paddingLeft="10dp"
             android:text="@string/humidity"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_below="@+id/dewResult"
+            android:layout_alignLeft="@+id/humidityResults"
+            android:layout_alignStart="@+id/humidityResults" />
 
         <TextView
             android:id="@+id/humidityResults"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/humidityLabel"
             android:paddingLeft="10dp"
-            android:text="--" />
+            android:text="--"
+            android:layout_below="@+id/humidityLabel"
+            android:layout_alignLeft="@+id/pressureLabel"
+            android:layout_alignStart="@+id/pressureLabel" />
 
         <TextView
             android:id="@+id/pressureLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/humidityResults"
             android:paddingLeft="10dp"
             android:text="@string/pressure"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_below="@+id/humidityResults"
+            android:layout_alignLeft="@+id/pressureResult"
+            android:layout_alignStart="@+id/pressureResult" />
 
         <TextView
             android:id="@+id/pressureResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="--"
+            android:layout_below="@+id/pressureLabel"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/pressureLabel"
-            android:paddingLeft="10dp"
-            android:text="--" />
+            android:layout_marginLeft="23dp"
+            android:layout_marginStart="23dp" />
 
         <TextView
             android:id="@+id/visibilityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/tempResult"
-            android:layout_toEndOf="@+id/image"
-            android:layout_toRightOf="@+id/image"
             android:paddingRight="10dp"
             android:text="@string/visiblity"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_below="@+id/conditionResult"
+            android:layout_alignLeft="@+id/visibilityResult"
+            android:layout_alignStart="@+id/visibilityResult" />
 
         <TextView
             android:id="@+id/wSpeedLabel"
@@ -161,10 +166,13 @@
             android:id="@+id/visibilityResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/visibilityLabel"
-            android:layout_toRightOf="@+id/image"
             android:paddingRight="10dp"
-            android:text="--" />
+            android:text="--"
+            android:layout_below="@+id/visibilityLabel"
+            android:layout_toRightOf="@+id/conditionResult"
+            android:layout_toEndOf="@+id/conditionResult"
+            android:layout_marginLeft="17dp"
+            android:layout_marginStart="17dp" />
 
         <TextView
             android:id="@+id/gustLabel"
