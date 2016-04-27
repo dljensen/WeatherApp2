@@ -18,8 +18,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 public class Main extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener{
-   private WeatherInfoIO weatherIO;
+
+    private WeatherInfoIO weatherIO;
     private WeatherInfo results;
     public AssetManager manager;
     private ImageView weatherImg;
@@ -27,6 +31,9 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     private boolean units = true; //boolean for units, initially true to indicate imperial mode
     private String zip; //string to store the zipcode
     private SharedPreferences savedItems; // user's favorite searches
+    private Set<String> savedZips = new TreeSet<String>(); //set to store zip codes
+    private String[] zipsArray = {"","","","",""}; //array for zips
+    private int zipIndex = 0; //index into zip array
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,6 +44,30 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         //ask SharedPreferences for the unit mode
         savedItems = getSharedPreferences("weather_data", MODE_PRIVATE);
         units = savedItems.getBoolean("units", true);
+
+        //ask SharedPreferences for the zip codes saved and populate the zip array
+        savedZips = savedItems.getStringSet("zips", savedZips);
+        for(String zip : savedZips){
+            System.out.println("Current Zip: " + zip);
+            zipsArray[zipIndex]=zip;
+            zipIndex = (zipIndex+1) % 5;
+        }
+
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        // get a SharedPreferences.Editor to update the zip codes
+        savedZips.clear();
+        for(int i = 0; i < zipsArray.length; i++){
+
+            //savedZips.add("60181");
+            savedZips.add(zipsArray[i]);
+        }
+        SharedPreferences.Editor preferencesEditor = savedItems.edit();
+        preferencesEditor.putStringSet("zips", savedZips); // store current search
+        preferencesEditor.apply(); // store the updated preferences
 
     }
 
@@ -226,6 +257,10 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         else {
                             //call the search function
                             setupCurrent();
+
+                            //save the zip in the set
+                            zipsArray[zipIndex]=zip;
+                            zipIndex = (zipIndex + 1) % 5;
                         }
                     }
                 }).
