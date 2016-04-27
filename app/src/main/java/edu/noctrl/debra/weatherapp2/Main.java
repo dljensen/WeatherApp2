@@ -1,11 +1,13 @@
 // Written by Debra Jensen & Emily Huizenga
 package edu.noctrl.debra.weatherapp2;
 
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,6 +55,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
             case R.id.about:
                 //show a dialog with some source info
                 //www.weather.gov
+                aboutDialog();
                 return true;
             case R.id.enter_zipcode:
                 //dialog to enter zipcode
@@ -210,6 +213,18 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         });
     }
 
+    public void aboutDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+        builder.setMessage(R.string.aboutText).
+                setTitle(R.string.aboutTitle).
+                setPositiveButton(R.string.ok, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        //do nothing
+                    }
+                });
+        builder.show();
+    }
 
     public void onFragmentInteraction(Uri uri){
 
