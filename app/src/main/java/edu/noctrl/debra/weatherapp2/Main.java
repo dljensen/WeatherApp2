@@ -222,6 +222,8 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
         weatherImg = (ImageView)findViewById(R.id.image);
 
+        String lat_long_url = "http://craiginsdev.com/zipcodes/findzip.php?zip=" + zip;
+
         //switch on the zip code
         switch (zip)
         {
