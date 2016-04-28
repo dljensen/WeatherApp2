@@ -13,14 +13,14 @@ Project Requirements:
     </ul></li>
 <li> Add a Menu! The menu should include the following:
     <ul>
-        <li>Enter Zipcode (prompts the user for a zipcode)</li>
-        <li>Recent Zipcodes (list of the last 5 zipcodes search)</li>
-        <li>Current Weather (Displays the current weather -- project 1's activity)</li>
+        <li><strike>Enter Zipcode (prompts the user for a zipcode)</strike></li>
+        <li><strike>Recent Zipcodes (list of the last 5 zipcodes search)</strike></li>
+        <li><strike>Current Weather (Displays the current weather -- project 1's activity)</strike></li>
         <li>7-Day Forecast (Displays the 7 day forecast activity)</li>
-        <li>Units (allows the user to switch between metric and imperial)</li>
-        <li>About (shows a simple dialog with some source info, like data from www.weather.gov)</li>
+        <li><strike>Units (allows the user to switch between metric and imperial)</strike></li>
+        <li><strike>About (shows a simple dialog with some source info, like data from www.weather.gov)</strike></li>
     </ul></li>
-<li> Maintain the user's unit preference and recent zip codes between sessions using SharedPreferences.</li>
+    <li><strike>Maintain the user's unit preference and recent zip codes between sessions using SharedPreferences.</strike></li>
 <li>Give the user more feedback:
     <ul>
         <li>Generate an implicit intent when the user clicks on the Current Location (a GEO intent)</li>
@@ -31,7 +31,7 @@ Project Requirements:
 <li> Generate a GUI for the extended forecast:
     <ul>
         <li>For images, check the cache directory first, then download if not found</li>
-        <li>Convert Project 1's activity into a fragment</li>
+        <li><strike>Convert Project 1's activity into a fragment</strike></li>
         <li>Create a new fragment for displaying forecast information</li>
         <li>Transition between forecast days on user swipe action</li>
     </ul></li>
