@@ -39,7 +39,7 @@ Project Requirements:
 
 <h3>Items Completed:</h3>
 <ul>
-    <li>Thursday, April 28: Fixed the shared preferences to store the most recent zipcodes</li>
+    <li>Thursday, April 28: Fixed the shared preferences to store the most recent zipcodes, added dialog for recent zips</li>
     <li>Wednesday, April 27: Created an alert dialog box for about info, fixed the Project 1 fragment, added an alert dialog to enter zip codes</li>
     <li>Tuesday, April 26: Added fragment for Project 1</li>
     <li>Monday, April 25: Created a drop-down menu. It has no functionality at this point.</li>
