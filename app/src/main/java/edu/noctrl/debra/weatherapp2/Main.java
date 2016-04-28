@@ -95,6 +95,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                 return true;
             case R.id.recent_zipcodes:
                 //show last 5 zipcodes entered
+                recentZipsDialog();
                 return true;
             case R.id.weather_current:
                 //show the project 1 activity
@@ -230,6 +231,22 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         //do nothing
                     }
                 });
+        builder.show();
+    }
+
+    public void recentZipsDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+        builder.setTitle(R.string.pickZipTitle)
+                .setItems(zipsArray, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        zip = zipsArray[which];
+                        //call the search function
+                        setupCurrent();
+
+                    }});
         builder.show();
     }
 

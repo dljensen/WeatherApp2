@@ -21,6 +21,7 @@
     <string name="cancel">Cancel</string>
     <string name="enterZipTitle">Enter a Zipcode: </string>
     <string name="unitTitle">Choose Units</string>
+    <string name="pickZipTitle">Recent Searches</string>
 
     <!-- File String -->
     <string name="preference_file_key">weatherapp.PREFERENCE_FILE_KEY</string>
