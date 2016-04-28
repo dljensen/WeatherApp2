@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Main extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener{
 
@@ -206,7 +207,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     }
 
 
-    //add the current fragment
+    //add the current weather fragment
     public void addCurrentFrag(){
         FragmentManager fragMan = getSupportFragmentManager();
         FragmentTransaction trans = fragMan.beginTransaction();
@@ -275,7 +276,8 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         zipsArray[zipIndex]=zip;
                         zipIndex = (zipIndex + 1) % 5;
 
-                    }});
+                    }
+                });
         builder.show();
     }
 
@@ -294,9 +296,11 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         //collect the user input
                         zip= zipInput.getText().toString();
 
-                        if(zip.equals("") || zip.length() > 5)
+                        if(zip.equals("") || zip.length() > 5 || zip.length() < 5)
                         {
                             //create a toast that says bad zip
+                            Toast.makeText(Main.this, R.string.badZipToast,
+                                    Toast.LENGTH_SHORT).show();
                             //call enterZipDialog again to re-prompt
                             enterZipDialog();
                         }
