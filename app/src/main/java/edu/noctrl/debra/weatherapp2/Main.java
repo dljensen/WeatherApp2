@@ -18,9 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 public class Main extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener{
 
     private WeatherInfoIO weatherIO;
@@ -31,8 +28,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     private boolean units = true; //boolean for units, initially true to indicate imperial mode
     private String zip; //string to store the zipcode
     private SharedPreferences savedItems; // user's favorite searches
-    private Set<String> savedZips = new TreeSet<String>(); //set to store zip codes
-    private String[] zipsArray = {"","","","",""}; //array for zips
+    private String[] zipsArray = new String[5]; //array for 5 zips
     private int zipIndex = 0; //index into zip array
 
     @Override
@@ -46,12 +42,18 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         units = savedItems.getBoolean("units", true);
 
         //ask SharedPreferences for the zip codes saved and populate the zip array
-        savedZips = savedItems.getStringSet("zips", savedZips);
-        for(String zip : savedZips){
-            System.out.println("Current Zip: " + zip);
-            zipsArray[zipIndex]=zip;
-            zipIndex = (zipIndex+1) % 5;
+        zipsArray[0] = savedItems.getString("0", "");
+        zipsArray[1] = savedItems.getString("1", "");
+        zipsArray[2] = savedItems.getString("2", "");
+        zipsArray[3] = savedItems.getString("3", "");
+        zipsArray[4] = savedItems.getString("4", "");
+        //debug loop to see what's stored
+        for(String zipC : zipsArray){
+            System.out.println("Current Zip: " + zipC);
         }
+
+        //get the zip index
+        zipIndex = savedItems.getInt("zipIndex", 0);
 
     }
     @Override
@@ -59,14 +61,12 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         super.onPause();
 
         // get a SharedPreferences.Editor to update the zip codes
-        savedZips.clear();
+        SharedPreferences.Editor preferencesEditor = savedItems.edit();
         for(int i = 0; i < zipsArray.length; i++){
 
-            //savedZips.add("60181");
-            savedZips.add(zipsArray[i]);
+            preferencesEditor.putString(Integer.toString(i), zipsArray[i]); // put zip in SP
         }
-        SharedPreferences.Editor preferencesEditor = savedItems.edit();
-        preferencesEditor.putStringSet("zips", savedZips); // store current search
+        preferencesEditor.putInt("zipIndex", zipIndex);
         preferencesEditor.apply(); // store the updated preferences
 
     }
