@@ -30,6 +30,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     private SharedPreferences savedItems; // user's favorite searches
     private String[] zipsArray = new String[5]; //array for 5 zips
     private int zipIndex = 0; //index into zip array
+    private boolean MODE = true; //which fragment is being looked at
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +56,16 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         //get the zip index
         zipIndex = savedItems.getInt("zipIndex", 0);
 
+        //set zip to the most recently searched zipcode and display the current conditions fragment
+        //THIS SHOULD DISPLAY WHICHEVER FRAGMENT THEY WERE LOOKING AT LAST
+        zip = zipsArray[(zipIndex + 5 - 1) % 5];
+
+        MODE = savedItems.getBoolean("mode", true); //get the saved mode
+
+        if(MODE){
+            addCurrentFrag();
+        }
+
     }
     @Override
     protected void onPause(){
@@ -67,7 +78,19 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
             preferencesEditor.putString(Integer.toString(i), zipsArray[i]); // put zip in SP
         }
         preferencesEditor.putInt("zipIndex", zipIndex);
+        preferencesEditor.putBoolean("mode", MODE);
         preferencesEditor.apply(); // store the updated preferences
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        //DISPLAY THE LAST SEARCHED ZIP CODE IF ON THE CURRENT CONDITIONS FRAGMENT
+        if(MODE){
+            setupCurrent();
+        }
 
     }
 
@@ -98,11 +121,13 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                 recentZipsDialog();
                 return true;
             case R.id.weather_current:
-                //show the project 1 activity
+                //show the project 1 activity and set the mode
                 addCurrentFrag();
+                MODE = true;
                 return true;
             case R.id.weather_7day:
                 //show 7 Day forecast activity
+                MODE = false;
                 return true;
             case R.id.units:
                 //dialog to toggle units
@@ -245,6 +270,10 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         zip = zipsArray[which];
                         //call the search function
                         setupCurrent();
+
+                        //put the zip in the recents set
+                        zipsArray[zipIndex]=zip;
+                        zipIndex = (zipIndex + 1) % 5;
 
                     }});
         builder.show();
