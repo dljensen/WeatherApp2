@@ -29,18 +29,13 @@ import java.io.InputStreamReader;
 
 public class Main extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener{
 
-    private WeatherInfoIO weatherIO;
-    private WeatherInfo results;
-    public AssetManager manager;
-    private ImageView weatherImg;
-    private TextView location, time, condition, temp, dew, humid, pressure, visibility, speed, gust;
-    private boolean units = true; //boolean for units, initially true to indicate imperial mode
-    private String zip; //string to store the zipcode
-    private SharedPreferences savedItems; // user's favorite searches
     private String[] zipsArray = new String[5]; //array for 5 zips
     private int zipIndex = 0; //index into zip array
+    private SharedPreferences savedItems; // user's favorite searches
     private boolean MODE = true; //which fragment is being looked at
-    private String[] coords = new String[2];
+    private DataManager dManager = new DataManager();
+    public AssetManager manager = this.getAssets();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,7 +45,8 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
         //ask SharedPreferences for the unit mode
         savedItems = getSharedPreferences("weather_data", MODE_PRIVATE);
-        units = savedItems.getBoolean("units", true);
+
+        dManager.setUnits(savedItems.getBoolean("units", true));
 
         //ask SharedPreferences for the zip codes saved and populate the zip array
         zipsArray[0] = savedItems.getString("0", "");
@@ -64,7 +60,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
         //set zip to the most recently searched zipcode and display the current conditions fragment
         //THIS SHOULD DISPLAY WHICHEVER FRAGMENT THEY WERE LOOKING AT LAST
-        zip = zipsArray[(zipIndex + 5 - 1) % 5];
+         dManager.setZip( zipsArray[(zipIndex + 5 - 1) % 5]);
 
         MODE = savedItems.getBoolean("mode", true); //get the saved mode, current or 7-Day
 
@@ -96,8 +92,8 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         super.onResume();
 
         //DISPLAY THE LAST SEARCHED ZIP CODE IF ON THE CURRENT CONDITIONS FRAGMENT
-        if(MODE && zip !=""){
-            setupCurrent();
+        if(MODE && dManager.getZip() !=""){
+            dManager.setupCurrent(manager);
         }
 
     }
@@ -146,114 +142,20 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         }
     }
 
-
-    //method to write weather data to the screen
-    public void setFields()
-    {
-        //CHECK THAT THERE IS A ZIP SAVED
-
-        double myTemp = results.current.temperature;
-        double myDew = results.current.dewPoint;
-        double myPressure = results.current.pressure;
-        double myWindSpeed = results.current.windSpeed;
-        double myVisibility = results.current.visibility;
-        double myGust = results.current.gusts;
-
-
-        //get text views
-        location = (TextView) findViewById(R.id.locationResult);
-        time = (TextView) findViewById(R.id.timeResult);
-        condition = (TextView) findViewById(R.id.conditionResult);
-        temp = (TextView) findViewById(R.id.tempResult);
-        dew = (TextView) findViewById(R.id.dewResult);
-        humid = (TextView) findViewById(R.id.humidityResults);
-        pressure = (TextView) findViewById(R.id.pressureResult);
-        visibility = (TextView) findViewById(R.id.visibilityResult);
-        speed = (TextView) findViewById(R.id.windResult);
-        gust = (TextView) findViewById(R.id.gustResult);
-
-        //convert to metric
-        if(!units)
-        {
-            myTemp = ((int)(((myTemp-32)/1.8)*100))/100.0; //convert to Celsius
-            myDew = ((int)(((myDew-32)/1.8)*100))/100.0; //convert to Celsius
-            myPressure = ((int)((myPressure*25.4)*100))/100.0; //convert to mm
-            myWindSpeed = ((int)((myWindSpeed * 1.609)*100))/100.0; //convert to km/h
-            myVisibility = ((int)((myVisibility * 1.609)*100))/100.0; //convert to km
-            temp.setText(myTemp + "\u2103");
-            dew.setText(myDew + "\u2103");
-            pressure.setText(myPressure + " mm");
-            visibility.setText(myVisibility + " km");
-            speed.setText(results.current.windDirectionStr()+ " @ " + myWindSpeed + " km/h");
-
-
-        }
-        else {
-            myTemp = results.current.temperature;
-            myDew = results.current.dewPoint;
-            myPressure = results.current.pressure;
-            myWindSpeed = results.current.windSpeed;
-            myVisibility = results.current.visibility;
-            temp.setText(myTemp + "\u2109");
-            dew.setText(myDew + "\u2109");
-            pressure.setText(myPressure + " in");
-            visibility.setText(myVisibility + " mi");
-            speed.setText(results.current.windDirectionStr()+ " @ " + myWindSpeed + " mph");
-
-        }
-
-        //populate fields
-        time.setText(results.current.timestamp);
-        condition.setText(results.current.summary);
-        location.setText(results.location.name);
-        humid.setText(results.current.humidity+"%");
-        if(Double.isNaN(myGust))
-            gust.setText("N/A");
-        else
-            gust.setText(myGust +" knots");
-    }
-
-
     //add the current weather fragment
-    public void addCurrentFrag(){
+   public void addCurrentFrag(){
         FragmentManager fragMan = getSupportFragmentManager();
         FragmentTransaction trans = fragMan.beginTransaction();
-        trans.add(R.id.main_layout, CurrentFragment.newInstance("string","string"), "New Current");
+        CurrentFragment cur = CurrentFragment.newInstance("string","string");
+        trans.add(R.id.main_layout, cur, "New Current");
         trans.commit();
+
+       if(dManager.getZip() !="")
+        cur.setFields(dManager.getResults(), dManager.getUnits());
+
     }
 
     //set up the current activity
-    private void setupCurrent(){
-        weatherIO = new WeatherInfoIO();
-        manager = this.getAssets();
-
-        weatherImg = (ImageView)findViewById(R.id.image);
-
-        //call getCoords
-            //switch on the zip code
-        switch (zip)
-        {
-            case "10024":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_10024));
-                break;
-            case "60540":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_60540));
-                break;
-            case "63101":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_63101));
-                break;
-            case "73301":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_73301));
-                break;
-            case "90001":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_90001));
-                break;
-
-        }
-        results = weatherIO.loadFromAsset(manager, zip + ".xml");
-
-        setFields();   //start in default imperial mode
-    }
 
     public void aboutDialog()
     {
@@ -276,10 +178,13 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
-                        zip = zipsArray[which];
+                        dManager.setZip(zipsArray[which]);
                         //call the search function
                         getCoords();
-                        setupCurrent();
+
+                        //REMOVE OLD FRAGMENT, CREATE NEW FRAGMENT OF CURRENT WEATHER
+                        //remove old frag
+                        addCurrentFrag();
 
                         //put the zip in the recents set
                         zipsArray[zipIndex]=zip;

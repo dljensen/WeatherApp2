@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 /**
@@ -22,6 +24,8 @@ public class CurrentFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ImageView weatherImg;
+    private TextView location, time, condition, temp, dew, humid, pressure, visibility, speed, gust;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -105,4 +109,96 @@ public class CurrentFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    //method to write weather data to the screen
+    public void setFields(WeatherInfo results, boolean units)
+    {
+        //CHECK THAT THERE IS A ZIP SAVED
+
+        double myTemp = results.current.temperature;
+        double myDew = results.current.dewPoint;
+        double myPressure = results.current.pressure;
+        double myWindSpeed = results.current.windSpeed;
+        double myVisibility = results.current.visibility;
+        double myGust = results.current.gusts;
+
+
+        //get text views
+        location = (TextView) getView().findViewById(R.id.locationResult);
+        time = (TextView) getView().findViewById(R.id.timeResult);
+        condition = (TextView) getView().findViewById(R.id.conditionResult);
+        temp = (TextView) getView().findViewById(R.id.tempResult);
+        dew = (TextView) getView().findViewById(R.id.dewResult);
+        humid = (TextView) getView().findViewById(R.id.humidityResults);
+        pressure = (TextView) getView().findViewById(R.id.pressureResult);
+        visibility = (TextView) getView().findViewById(R.id.visibilityResult);
+        speed = (TextView) getView().findViewById(R.id.windResult);
+        gust = (TextView) getView().findViewById(R.id.gustResult);
+
+        //convert to metric
+        if(!units)
+        {
+            myTemp = ((int)(((myTemp-32)/1.8)*100))/100.0; //convert to Celsius
+            myDew = ((int)(((myDew-32)/1.8)*100))/100.0; //convert to Celsius
+            myPressure = ((int)((myPressure*25.4)*100))/100.0; //convert to mm
+            myWindSpeed = ((int)((myWindSpeed * 1.609)*100))/100.0; //convert to km/h
+            myVisibility = ((int)((myVisibility * 1.609)*100))/100.0; //convert to km
+            temp.setText(myTemp + "\u2103");
+            dew.setText(myDew + "\u2103");
+            pressure.setText(myPressure + " mm");
+            visibility.setText(myVisibility + " km");
+            speed.setText(results.current.windDirectionStr()+ " @ " + myWindSpeed + " km/h");
+
+
+        }
+        else {
+            myTemp = results.current.temperature;
+            myDew = results.current.dewPoint;
+            myPressure = results.current.pressure;
+            myWindSpeed = results.current.windSpeed;
+            myVisibility = results.current.visibility;
+            temp.setText(myTemp + "\u2109");
+            dew.setText(myDew + "\u2109");
+            pressure.setText(myPressure + " in");
+            visibility.setText(myVisibility + " mi");
+            speed.setText(results.current.windDirectionStr()+ " @ " + myWindSpeed + " mph");
+
+        }
+
+        //populate fields
+        time.setText(results.current.timestamp);
+        condition.setText(results.current.summary);
+        location.setText(results.location.name);
+        humid.setText(results.current.humidity+"%");
+        if(Double.isNaN(myGust))
+            gust.setText("N/A");
+        else
+            gust.setText(myGust +" knots");
+
+        weatherImg = (ImageView)getView().findViewById(R.id.image);
+
+        //call getCoords
+        //switch on the zip code
+       /* switch (zip)
+        {
+            case "10024":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_10024));
+                break;
+            case "60540":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_60540));
+                break;
+            case "63101":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_63101));
+                break;
+            case "73301":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_73301));
+                break;
+            case "90001":
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_90001));
+                break;
+
+        }*/
+    }
+
+
 }
