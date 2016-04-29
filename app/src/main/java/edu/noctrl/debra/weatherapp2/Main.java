@@ -19,6 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class Main extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener{
 
     private WeatherInfoIO weatherIO;
@@ -32,6 +40,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     private String[] zipsArray = new String[5]; //array for 5 zips
     private int zipIndex = 0; //index into zip array
     private boolean MODE = true; //which fragment is being looked at
+    private String[] coords = new String[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,10 +58,6 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         zipsArray[2] = savedItems.getString("2", "");
         zipsArray[3] = savedItems.getString("3", "");
         zipsArray[4] = savedItems.getString("4", "");
-        //debug loop to see what's stored
-        for(String zipC : zipsArray){
-            System.out.println("Current Zip: " + zipC);
-        }
 
         //get the zip index
         zipIndex = savedItems.getInt("zipIndex", 0);
@@ -61,11 +66,13 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         //THIS SHOULD DISPLAY WHICHEVER FRAGMENT THEY WERE LOOKING AT LAST
         zip = zipsArray[(zipIndex + 5 - 1) % 5];
 
-        MODE = savedItems.getBoolean("mode", true); //get the saved mode
+        MODE = savedItems.getBoolean("mode", true); //get the saved mode, current or 7-Day
 
+        //Current mode and a saved zio
         if(MODE){
             addCurrentFrag();
         }
+        //else pull up 7-DAY
 
     }
     @Override
@@ -89,7 +96,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         super.onResume();
 
         //DISPLAY THE LAST SEARCHED ZIP CODE IF ON THE CURRENT CONDITIONS FRAGMENT
-        if(MODE){
+        if(MODE && zip !=""){
             setupCurrent();
         }
 
@@ -222,9 +229,8 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
         weatherImg = (ImageView)findViewById(R.id.image);
 
-        String lat_long_url = "http://craiginsdev.com/zipcodes/findzip.php?zip=" + zip;
-
-        //switch on the zip code
+        //call getCoords
+            //switch on the zip code
         switch (zip)
         {
             case "10024":
@@ -272,6 +278,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         // of the selected item
                         zip = zipsArray[which];
                         //call the search function
+                        getCoords();
                         setupCurrent();
 
                         //put the zip in the recents set
@@ -308,6 +315,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         }
                         else {
                             //call the search function
+                            getCoords();
                             setupCurrent();
 
                             //save the zip in the set
@@ -360,5 +368,44 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     }
     public void onFragmentInteraction(Uri uri){
 
+    }
+
+    public void getCoords()
+    {
+        final String lat_long_url = "http://craiginsdev.com/zipcodes/findzip.php?zip=" + zip;
+        Downloader<JSONObject> myDownloader = new Downloader<JSONObject>(new Downloader.DownloadListener<JSONObject>()
+        {
+            @Override
+            public JSONObject parseResponse(InputStream in) throws IOException, JSONException {
+
+                    StringBuilder strBuild = new StringBuilder();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+                    //read lines from input
+                    String line = br.readLine();
+                    if(line == null)
+                    {
+                        //make a toast saying bad Zip, the zip returned no data
+                        Toast.makeText(Main.this, R.string.badZipToast,
+                                Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+
+                    while(line != null){
+                        strBuild.append(line);
+                        line = br.readLine();
+                    }
+                    String result = strBuild.toString();
+                    JSONObject obj = new JSONObject(result);
+
+                    return obj;
+            }
+
+            @Override
+            public void handleResult(JSONObject result) throws JSONException {
+                coords[0] = result.getString("latitude");
+                coords[1] = result.getString("longitude");
+            }
+        });
+            myDownloader.execute(lat_long_url);
     }
 }

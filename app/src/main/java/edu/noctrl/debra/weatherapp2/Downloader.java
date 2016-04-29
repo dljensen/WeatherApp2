@@ -3,7 +3,11 @@ package edu.noctrl.debra.weatherapp2;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 
 /**
  * An asynchronous task that will open an input stream to the specified
@@ -27,13 +31,13 @@ public class Downloader<T> extends AsyncTask<String, Void, T>{
 			 * @param ios InputStream from the web request
 			 * @return T object created from the input stream
 			 */
-            public abstract T parseResponse(InputStream in);
+            public abstract T parseResponse(InputStream in) throws IOException, JSONException;
 			/**
 			 * Override this function.  Create a function that takes an object of type <code>T</code>
 			 * and performs the required actions by your application
 			 * @param result Object of type <code>T</code> created in the override parseResponse function
 			 */
-            public abstract void handleResult(T result);
+            public abstract void handleResult(T result) throws JSONException;
         }
         DownloadListener<T> listener;
         public Downloader(DownloadListener<T> listener) {
@@ -55,6 +59,10 @@ public class Downloader<T> extends AsyncTask<String, Void, T>{
         }
 
         protected void onPostExecute(T result) {
-            listener.handleResult(result);
+            try {
+                listener.handleResult(result);
+            } catch (JSONException e) {
+
+            }
         }
 }
