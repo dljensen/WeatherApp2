@@ -114,7 +114,6 @@ public class CurrentFragment extends Fragment {
     public void setFields(WeatherInfo results, boolean units)
     {
         //CHECK THAT THERE IS A ZIP SAVED
-
         double myTemp = results.current.temperature;
         double myDew = results.current.dewPoint;
         double myPressure = results.current.pressure;
@@ -122,8 +121,9 @@ public class CurrentFragment extends Fragment {
         double myVisibility = results.current.visibility;
         double myGust = results.current.gusts;
 
+        String imageURL = results.current.imageUrl; //get the url of the weather image
 
-        //get text views
+        //get views
         location = (TextView) getView().findViewById(R.id.locationResult);
         time = (TextView) getView().findViewById(R.id.timeResult);
         condition = (TextView) getView().findViewById(R.id.conditionResult);
@@ -134,6 +134,11 @@ public class CurrentFragment extends Fragment {
         visibility = (TextView) getView().findViewById(R.id.visibilityResult);
         speed = (TextView) getView().findViewById(R.id.windResult);
         gust = (TextView) getView().findViewById(R.id.gustResult);
+
+        weatherImg = (ImageView) getView().findViewById(R.id.image);
+        // show The Image in a ImageView
+        new DownloadImageTask(weatherImg)
+                .execute(imageURL);
 
         //convert to metric
         if(!units)
@@ -175,29 +180,6 @@ public class CurrentFragment extends Fragment {
         else
             gust.setText(myGust +" knots");
 
-        weatherImg = (ImageView)getView().findViewById(R.id.image);
-
-        //call getCoords
-        //switch on the zip code
-       /* switch (zip)
-        {
-            case "10024":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_10024));
-                break;
-            case "60540":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_60540));
-                break;
-            case "63101":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_63101));
-                break;
-            case "73301":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_73301));
-                break;
-            case "90001":
-                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.img_90001));
-                break;
-
-        }*/
     }
 
 
