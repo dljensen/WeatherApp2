@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +28,7 @@ public class CurrentFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private ImageView weatherImg;
     private TextView location, time, condition, temp, dew, humid, pressure, visibility, speed, gust;
+    private Context ctx;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -83,6 +86,7 @@ public class CurrentFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
+            ctx = context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -136,9 +140,8 @@ public class CurrentFragment extends Fragment {
         gust = (TextView) getView().findViewById(R.id.gustResult);
 
         weatherImg = (ImageView) getView().findViewById(R.id.image);
-        // show The Image in a ImageView
-        new DownloadImageTask(weatherImg)
-                .execute(imageURL);
+        String fileName = Uri.parse(imageURL).getLastPathSegment();
+
 
         //convert to metric
         if(!units)
@@ -179,6 +182,18 @@ public class CurrentFragment extends Fragment {
             gust.setText("N/A");
         else
             gust.setText(myGust +" knots");
+
+
+        //add the image
+        if(new File(ctx.getCacheDir(), fileName).exists()){
+            //get image from cache and set
+        }
+        else{
+            //download the image and put it in the view
+        // show The Image in a ImageView
+        new DownloadImageTask(weatherImg, ctx)
+                .execute(imageURL);
+        }
 
     }
 
