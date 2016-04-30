@@ -19,6 +19,7 @@ public class WeatherInfoIO {
                 return wxp.parse();
             } catch (Exception ex){
                 ex.printStackTrace();
+                System.out.println("Failed in the Weather Listener");
                 return null;
             }
         }

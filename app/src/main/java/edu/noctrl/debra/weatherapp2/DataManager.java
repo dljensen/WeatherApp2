@@ -47,6 +47,11 @@ public class DataManager {
         return results;
     }
 
+    public String[] getLatLon()
+    {
+        return coords;
+    }
+
    public void setupCurrent(AssetManager manager){
         weatherIO = new WeatherInfoIO();
 
@@ -59,7 +64,9 @@ public class DataManager {
 
     public void getCoords(final Context ctx)
     {
+        System.out.println("Calling get Coords and the zip is " + zip);
         final String lat_long_url = "http://craiginsdev.com/zipcodes/findzip.php?zip=" + zip;
+        System.out.println("Calling get Coords and the zip is " + zip);
         Downloader<JSONObject> myDownloader = new Downloader<JSONObject>(new Downloader.DownloadListener<JSONObject>()
         {
             @Override
@@ -83,7 +90,9 @@ public class DataManager {
                 }
                 String result = strBuild.toString();
                 JSONObject obj = new JSONObject(result);
-
+                coords[0] = obj.getString("latitude");
+                coords[1] = obj.getString("longitude");
+                System.out.println("Parse Response Lat is " +  coords[0] + " Lon is "+ coords[1]);
                 return obj;
             }
 
@@ -91,9 +100,37 @@ public class DataManager {
             public void handleResult(JSONObject result) throws JSONException {
                 coords[0] = result.getString("latitude");
                 coords[1] = result.getString("longitude");
+                System.out.println("Handle Result Lat is " +  coords[0] + " Lon is "+ coords[1]);
+
+                getData();
             }
         });
         myDownloader.execute(lat_long_url);
     }
+
+    public void getData()
+    {
+        WeatherInfoIO.WeatherListener weatherDownloaded = new WeatherInfoIO.WeatherListener(){
+            @Override
+            public void handleResult(WeatherInfo res) {
+                results = res;
+                System.out.print("In Weather Listener!!!!!");
+            }
+        };
+
+        WeatherInfoIO.loadFromUrl("http://forecast.weather.gov/MapClick.php?lat="
+                        + coords[0] +
+                        "&lon="
+                        + coords[1] +
+                        "&unit=0&lg=english&FcstType=dwml",
+                weatherDownloaded);
+
+        System.out.println("The temperature is " + results.current.temperature);
+
+
+
+    }
+
+
 
 }

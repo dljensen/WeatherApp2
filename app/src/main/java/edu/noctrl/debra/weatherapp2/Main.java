@@ -57,8 +57,12 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
         MODE = savedItems.getBoolean("mode", true); //get the saved mode, current or 7-Day
 
-        //Current mode and a saved zio
+        //Current mode and a saved zip
+        if(dManager.getZip() != "") {
+            dManager.getCoords(Main.this);
+        }
         if(MODE){
+
             addCurrentFrag();
         }
         //else pull up 7-DAY
@@ -143,9 +147,14 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         trans.add(R.id.main_layout, cur, curTag);
         trans.commit();
 
-        if(dManager.getZip() !="")
-            cur.setFields(dManager.getResults(), dManager.getUnits());
+      //  if(dManager.getZip() !="")
+          //  cur.setFields(dManager.getResults(), dManager.getUnits());
 
+        String[] myCoords = dManager.getLatLon();
+        if(dManager.getZip() !="") {
+            System.out.println("In Main the Lat is " + myCoords[0] + " and the Lon is " + myCoords[1]);
+//            System.out.println("The temperature is " + dManager.getResults().current.temperature);
+        }
 
     }
 
@@ -226,7 +235,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                             //call the search function
                             dManager.getCoords(Main.this);
                             removeCurrentFrag();
-                            addCurrentFrag();
+                           // addCurrentFrag();
 
                             //save the zip in the set
                             zipsArray[zipIndex]=dManager.getZip();
