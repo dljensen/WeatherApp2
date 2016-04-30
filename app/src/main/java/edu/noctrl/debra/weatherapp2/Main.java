@@ -57,16 +57,6 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
         MODE = savedItems.getBoolean("mode", true); //get the saved mode, current or 7-Day
 
-        //Current mode and a saved zip
-        if(dManager.getZip() != "") {
-            dManager.getCoords(Main.this);
-        }
-        if(MODE){
-
-            addCurrentFrag();
-        }
-        //else pull up 7-DAY
-
     }
     @Override
     protected void onPause(){
@@ -90,7 +80,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
         //DISPLAY THE LAST SEARCHED ZIP CODE IF ON THE CURRENT CONDITIONS FRAGMENT
         if(MODE && dManager.getZip() !=""){
-            dManager.setupCurrent(manager);
+                addCurrentFrag();
         }
 
     }
@@ -147,14 +137,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         trans.add(R.id.main_layout, cur, curTag);
         trans.commit();
 
-      //  if(dManager.getZip() !="")
-          //  cur.setFields(dManager.getResults(), dManager.getUnits());
-
-        String[] myCoords = dManager.getLatLon();
-        if(dManager.getZip() !="") {
-            System.out.println("In Main the Lat is " + myCoords[0] + " and the Lon is " + myCoords[1]);
-//            System.out.println("The temperature is " + dManager.getResults().current.temperature);
-        }
+        dManager.getCoords(Main.this, cur);
 
     }
 
@@ -192,8 +175,6 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         // The 'which' argument contains the index position
                         // of the selected item
                         dManager.setZip(zipsArray[which]);
-                        //call the search function
-                        dManager.getCoords(Main.this);
 
                         //REMOVE OLD FRAGMENT, CREATE NEW FRAGMENT OF CURRENT WEATHER
                         removeCurrentFrag();
@@ -232,10 +213,9 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                             enterZipDialog();
                         }
                         else {
-                            //call the search function
-                            dManager.getCoords(Main.this);
+
                             removeCurrentFrag();
-                           // addCurrentFrag();
+                            addCurrentFrag();
 
                             //save the zip in the set
                             zipsArray[zipIndex]=dManager.getZip();

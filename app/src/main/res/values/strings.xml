@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Weather App 1</string>
+    <string name="app_name">Weather App 2</string>
     <string name="zip">Zip Code:</string>
     <string name="location">Current Location: </string>
     <string name="time">Current Time: </string>

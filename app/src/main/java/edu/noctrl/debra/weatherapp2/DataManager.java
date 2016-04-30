@@ -1,7 +1,6 @@
 package edu.noctrl.debra.weatherapp2;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -52,37 +51,24 @@ public class DataManager {
         return coords;
     }
 
-   public void setupCurrent(AssetManager manager){
-        weatherIO = new WeatherInfoIO();
-
-
-        results = weatherIO.loadFromAsset(manager, zip + ".xml");
-
-    }
     //add the current weather fragment
 
 
-    public void getCoords(final Context ctx)
+    public void getCoords(final Context ctx, final CurrentFragment frag)
     {
         System.out.println("Calling get Coords and the zip is " + zip);
         final String lat_long_url = "http://craiginsdev.com/zipcodes/findzip.php?zip=" + zip;
-        System.out.println("Calling get Coords and the zip is " + zip);
         Downloader<JSONObject> myDownloader = new Downloader<JSONObject>(new Downloader.DownloadListener<JSONObject>()
         {
             @Override
             public JSONObject parseResponse(InputStream in) throws IOException, JSONException {
+                System.out.println("Parse response zip is " + zip);
+
 
                 StringBuilder strBuild = new StringBuilder();
                 BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
                 //read lines from input
                 String line = br.readLine();
-                if(line == null)
-                {
-                    //make a toast saying bad Zip, the zip returned no data
-                    Toast.makeText(ctx, R.string.badZipToast,
-                            Toast.LENGTH_SHORT).show();
-                    return null;
-                }
 
                 while(line != null){
                     strBuild.append(line);
@@ -90,31 +76,42 @@ public class DataManager {
                 }
                 String result = strBuild.toString();
                 JSONObject obj = new JSONObject(result);
-                coords[0] = obj.getString("latitude");
-                coords[1] = obj.getString("longitude");
-                System.out.println("Parse Response Lat is " +  coords[0] + " Lon is "+ coords[1]);
+
                 return obj;
             }
 
             @Override
             public void handleResult(JSONObject result) throws JSONException {
-                coords[0] = result.getString("latitude");
-                coords[1] = result.getString("longitude");
-                System.out.println("Handle Result Lat is " +  coords[0] + " Lon is "+ coords[1]);
+              //try catch block to handle bad zipcodes
+               try{
+                    coords[0] = result.getString("latitude");
+                    coords[1] = result.getString("longitude");
 
-                getData();
+                    getData(frag);
+                }
+                catch(NullPointerException e){
+                    //make a toast saying bad Zip, the zip returned no data
+                    System.out.println("zip is " + zip);
+                    Toast.makeText(ctx, R.string.badZipToast,
+                            Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         myDownloader.execute(lat_long_url);
     }
 
-    public void getData()
+    public void getData(CurrentFragment frag)
     {
+        final CurrentFragment current_weather = frag;
         WeatherInfoIO.WeatherListener weatherDownloaded = new WeatherInfoIO.WeatherListener(){
             @Override
             public void handleResult(WeatherInfo res) {
                 results = res;
-                System.out.print("In Weather Listener!!!!!");
+                System.out.println("In Weather Listener!!!!!");
+                System.out.println("Location is " + results.location.name);
+
+                current_weather.setFields(results, units);
             }
         };
 
@@ -124,10 +121,6 @@ public class DataManager {
                         + coords[1] +
                         "&unit=0&lg=english&FcstType=dwml",
                 weatherDownloaded);
-
-        System.out.println("The temperature is " + results.current.temperature);
-
-
 
     }
 
