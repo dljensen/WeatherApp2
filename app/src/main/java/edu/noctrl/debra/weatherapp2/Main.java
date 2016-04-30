@@ -15,17 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class Main extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener{
 
@@ -33,8 +23,9 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     private int zipIndex = 0; //index into zip array
     private SharedPreferences savedItems; // user's favorite searches
     private boolean MODE = true; //which fragment is being looked at
-    private DataManager dManager = new DataManager();
-    public AssetManager manager = this.getAssets();
+    private DataManager dManager;
+    public AssetManager manager;
+    private String curTag = "newCurrent";
 
 
     @Override
@@ -43,6 +34,8 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
+        manager = this.getAssets();
+        dManager = new DataManager();
         //ask SharedPreferences for the unit mode
         savedItems = getSharedPreferences("weather_data", MODE_PRIVATE);
 
@@ -143,15 +136,26 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     }
 
     //add the current weather fragment
-   public void addCurrentFrag(){
+    public void addCurrentFrag(){
         FragmentManager fragMan = getSupportFragmentManager();
         FragmentTransaction trans = fragMan.beginTransaction();
         CurrentFragment cur = CurrentFragment.newInstance("string","string");
-        trans.add(R.id.main_layout, cur, "New Current");
+        trans.add(R.id.main_layout, cur, curTag);
         trans.commit();
 
-       if(dManager.getZip() !="")
-        cur.setFields(dManager.getResults(), dManager.getUnits());
+        if(dManager.getZip() !="")
+            cur.setFields(dManager.getResults(), dManager.getUnits());
+
+
+    }
+
+    //remove the current weather fragment
+    public void removeCurrentFrag(){
+        FragmentManager fragMan = getSupportFragmentManager();
+        FragmentTransaction trans = fragMan.beginTransaction();
+        CurrentFragment curRemove = (CurrentFragment) getSupportFragmentManager().findFragmentByTag(curTag);
+        trans.remove(curRemove);
+        trans.commit();
 
     }
 
@@ -180,14 +184,14 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         // of the selected item
                         dManager.setZip(zipsArray[which]);
                         //call the search function
-                        getCoords();
+                        dManager.getCoords(Main.this);
 
                         //REMOVE OLD FRAGMENT, CREATE NEW FRAGMENT OF CURRENT WEATHER
-                        //remove old frag
+                        removeCurrentFrag();
                         addCurrentFrag();
 
                         //put the zip in the recents set
-                        zipsArray[zipIndex]=zip;
+                        zipsArray[zipIndex]=dManager.getZip();
                         zipIndex = (zipIndex + 1) % 5;
 
                     }
@@ -208,9 +212,9 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                 setPositiveButton(R.string.ok, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         //collect the user input
-                        zip= zipInput.getText().toString();
+                        dManager.setZip(zipInput.getText().toString());
 
-                        if(zip.equals("") || zip.length() > 5 || zip.length() < 5)
+                        if(dManager.getZip().equals("") || dManager.getZip().length() > 5 || dManager.getZip().length() < 5)
                         {
                             //create a toast that says bad zip
                             Toast.makeText(Main.this, R.string.badZipToast,
@@ -220,11 +224,12 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                         }
                         else {
                             //call the search function
-                            getCoords();
-                            setupCurrent();
+                            dManager.getCoords(Main.this);
+                            removeCurrentFrag();
+                            addCurrentFrag();
 
                             //save the zip in the set
-                            zipsArray[zipIndex]=zip;
+                            zipsArray[zipIndex]=dManager.getZip();
                             zipIndex = (zipIndex + 1) % 5;
                         }
                     }
@@ -245,28 +250,31 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
                 setPositiveButton(R.string.imperial, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         //switch the units to imperial and save in savedPreferences
-                        units = true;
+                        dManager.setUnits(true);
 
                         // get a SharedPreferences.Editor to edit the units
                         SharedPreferences.Editor preferencesEditor = savedItems.edit();
                         preferencesEditor.putBoolean("units", true); // store current search
                         preferencesEditor.apply(); // store the updated preferences
-
-                        setFields();
+                        //REMOVE OLD FRAGMENT, CREATE NEW FRAGMENT OF CURRENT WEATHER
+                        //remove old frag
+                        removeCurrentFrag();
+                        addCurrentFrag();
 
                     }
                 }).
                 setNegativeButton(R.string.metric, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id) {
                         //switch the units to metric and save in savedPreferences
-                        units = false;
+                        dManager.setUnits(false);
 
                         // get a SharedPreferences.Editor to edit the units
                         SharedPreferences.Editor preferencesEditor = savedItems.edit();
                         preferencesEditor.putBoolean("units", false); // store current search
                         preferencesEditor.apply(); // store the updated preferences
 
-                        setFields();
+                        removeCurrentFrag();
+                        addCurrentFrag();
                     }
                 });
         builder.show();
@@ -275,42 +283,4 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
     }
 
-    public void getCoords()
-    {
-        final String lat_long_url = "http://craiginsdev.com/zipcodes/findzip.php?zip=" + zip;
-        Downloader<JSONObject> myDownloader = new Downloader<JSONObject>(new Downloader.DownloadListener<JSONObject>()
-        {
-            @Override
-            public JSONObject parseResponse(InputStream in) throws IOException, JSONException {
-
-                    StringBuilder strBuild = new StringBuilder();
-                    BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-                    //read lines from input
-                    String line = br.readLine();
-                    if(line == null)
-                    {
-                        //make a toast saying bad Zip, the zip returned no data
-                        Toast.makeText(Main.this, R.string.badZipToast,
-                                Toast.LENGTH_SHORT).show();
-                        return null;
-                    }
-
-                    while(line != null){
-                        strBuild.append(line);
-                        line = br.readLine();
-                    }
-                    String result = strBuild.toString();
-                    JSONObject obj = new JSONObject(result);
-
-                    return obj;
-            }
-
-            @Override
-            public void handleResult(JSONObject result) throws JSONException {
-                coords[0] = result.getString("latitude");
-                coords[1] = result.getString("longitude");
-            }
-        });
-            myDownloader.execute(lat_long_url);
-    }
 }
