@@ -6,8 +6,8 @@ Project Requirements:
 <ol>
 <li> Dynamic Data:
     <ul>
-        <li>Look up zipcode latitude and longitude from http://craiginsdev.com/zipcodes/findzip.php?zip=60540</li>
-        <li>Pull weather XML from weather.gov using latitude and longitude http://forecast.weather.gov/MapClick.php?lat={latitude}&lon={longitude}&unit=0&lg=english&FcstType=dwml</li>
+        <li><strike>Look up zipcode latitude and longitude from http://craiginsdev.com/zipcodes/findzip.php?zip=60540</strike></li>
+        <li><strike>Pull weather XML from weather.gov using latitude and longitude http://forecast.weather.gov/MapClick.php?lat={latitude}&lon={longitude}&unit=0&lg=english&FcstType=dwml</strike></li>
         <li>Parse the rest of the weather xml file. See XML Breakdown for how each piece of the xml matches with eachother.</li>
         <li>Download the weather images and save them in the app's Cache directory</li>
     </ul></li>
@@ -26,7 +26,7 @@ Project Requirements:
         <li>Generate an implicit intent when the user clicks on the Current Location (a GEO intent)</li>
         <li>Generate notification(s) when your app downloads a weather forecast with alerts. Have the intent be an implicit intent to the link for the alert.</li>
         <li>Can generate multiple notifications if multiple alerts</li>
-        <li>Generate Toast Messages when the user does something that causes an error (bad zipcode, unknown zipcode, weather not found, no internet connection etc)</li>
+        <li>Generate Toast Messages when the user does something that causes an error (<strike>bad zipcode, unknown zipcode,</strike> weather not found, no internet connection etc)</li>
     </ul></li>
 <li> Generate a GUI for the extended forecast:
     <ul>
