@@ -20,7 +20,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Main extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener{
+public class Main extends AppCompatActivity implements OnFragmentInteractionListener{
 
     private String[] zipsArray = new String[5]; //array for 5 zips
     private int zipIndex = 0; //index into zip array
