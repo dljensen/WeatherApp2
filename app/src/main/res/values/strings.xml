@@ -23,6 +23,7 @@
     <string name="unitTitle">Choose Units</string>
     <string name="pickZipTitle">Recent Searches</string>
     <string name="badZipToast">The zipcode you entered was invalid. Try again.</string>
+    <string name="noInternet">You are not connected to the internet.</string>
 
     <!-- File String -->
     <string name="preference_file_key">weatherapp.PREFERENCE_FILE_KEY</string>

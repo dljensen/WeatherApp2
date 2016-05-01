@@ -1,9 +1,12 @@
 // Written by Debra Jensen & Emily Huizenga
 package edu.noctrl.debra.weatherapp2;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -137,15 +140,22 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
     //add the current weather fragment
     public void addCurrentFrag(){
-        FragmentManager fragMan = getSupportFragmentManager();
-        FragmentTransaction trans = fragMan.beginTransaction();
-        CurrentFragment cur = CurrentFragment.newInstance("string","string");
-        trans.add(R.id.main_layout, cur, curTag);
-        trans.commit();
+        if(internetAccess())  //internet is connected
+        {
+            FragmentManager fragMan = getSupportFragmentManager();
+            FragmentTransaction trans = fragMan.beginTransaction();
+            CurrentFragment cur = CurrentFragment.newInstance("string", "string");
+            trans.add(R.id.main_layout, cur, curTag);
+            trans.commit();
 
-        dManager.getCoords(Main.this, cur);
-        System.out.println("In Add Current Frag");
-
+            dManager.getCoords(Main.this, cur);
+        }
+        else
+        {
+            //toast saying no connectivity
+            Toast.makeText(Main.this, R.string.noInternet,
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     //remove the current weather fragment
@@ -155,7 +165,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         CurrentFragment curRemove = (CurrentFragment) getSupportFragmentManager().findFragmentByTag(curTag);
         trans.remove(curRemove);
         trans.commit();
-        System.out.println("In Add Remove Current Frag");
+        System.out.println("In Remove Current Frag");
 
     }
 
@@ -280,4 +290,9 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
 
     }
 
+    public boolean internetAccess(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo an = cm.getActiveNetworkInfo();
+        return an != null && an.isConnected();
+    }
 }
