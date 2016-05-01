@@ -24,8 +24,8 @@ Project Requirements:
 <li>Give the user more feedback:
     <ul>
         <li><strike>Generate an implicit intent when the user clicks on the Current Location (a GEO intent)</strike></li>
-        <li>Generate notification(s) when your app downloads a weather forecast with alerts. Have the intent be an implicit intent to the link for the alert.</li>
-        <li>Can generate multiple notifications if multiple alerts</li>
+        <li><strike>Generate notification(s) when your app downloads a weather forecast with alerts. Have the intent be an implicit intent to the link for the alert.</strike></li>
+        <li><strike>Can generate multiple notifications if multiple alerts</strike></li>
         <li>Generate Toast Messages when the user does something that causes an error (bad zipcode, unknown zipcode, weather not found, no internet connection etc)</li>
     </ul></li>
 <li> Generate a GUI for the extended forecast:

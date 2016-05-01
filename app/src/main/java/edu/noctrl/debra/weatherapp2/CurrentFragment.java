@@ -1,10 +1,13 @@
 package edu.noctrl.debra.weatherapp2;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -180,7 +183,6 @@ public class CurrentFragment extends Fragment {
         else
             gust.setText(myGust +" knots");
 
-
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,6 +219,14 @@ public class CurrentFragment extends Fragment {
                 .execute(imageURL);
        // }
 
+        //generate notifications for alerts
+        if(!results.alerts.isEmpty())
+        {
+            for(String alert : results.alerts)
+            {
+                generateAlerts(alert);
+            }
+        }
     }
 
     public void geoIntent(Uri field){
@@ -224,6 +234,24 @@ public class CurrentFragment extends Fragment {
         intent.setData(field);
         if(intent.resolveActivity(ctx.getPackageManager()) != null)
             startActivity(intent);
+    }
+
+    public void generateAlerts(String alert)
+    {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity())
+                .setSmallIcon(R.drawable.iconstorm).setContentTitle(getString(R.string.alertTitle))
+                .setContentText(getString(R.string.alertText));
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(alert));
+
+
+       PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, intent, 0);
+        mBuilder.setContentIntent(contentIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        mNotificationManager.notify(0, mBuilder.build());
+
     }
 
 }

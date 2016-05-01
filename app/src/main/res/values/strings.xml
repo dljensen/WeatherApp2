@@ -27,6 +27,9 @@
     <!-- File String -->
     <string name="preference_file_key">weatherapp.PREFERENCE_FILE_KEY</string>
 
+    <!--Notification Strings -->
+    <string name="alertTitle">Weather Alert</string>
+    <string name="alertText">There is a weather alert in your area. Click for more info.</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
