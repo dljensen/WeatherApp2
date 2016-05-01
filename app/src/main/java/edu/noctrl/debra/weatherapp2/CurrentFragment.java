@@ -1,6 +1,7 @@
 package edu.noctrl.debra.weatherapp2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 
 
 /**
@@ -115,8 +116,8 @@ public class CurrentFragment extends Fragment {
     }
 
     //method to write weather data to the screen
-    public void setFields(WeatherInfo results, boolean units)
-    {
+    public void setFields(final WeatherInfo results, boolean units) throws FileNotFoundException {
+        System.out.println("In Current Set Fields");
         //CHECK THAT THERE IS A ZIP SAVED
         double myTemp = results.current.temperature;
         double myDew = results.current.dewPoint;
@@ -138,10 +139,6 @@ public class CurrentFragment extends Fragment {
         visibility = (TextView) getView().findViewById(R.id.visibilityResult);
         speed = (TextView) getView().findViewById(R.id.windResult);
         gust = (TextView) getView().findViewById(R.id.gustResult);
-
-        weatherImg = (ImageView) getView().findViewById(R.id.image);
-        String fileName = Uri.parse(imageURL).getLastPathSegment();
-
 
         //convert to metric
         if(!units)
@@ -184,18 +181,49 @@ public class CurrentFragment extends Fragment {
             gust.setText(myGust +" knots");
 
 
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String lat = Double.toString(results.location.latitude);
+                String lon = Double.toString(results.location.longitude);
+                String geo = "geo:"+lat+","+lon;
+
+                geoIntent(Uri.parse(geo));
+            }
+        });
+
+
+       weatherImg = (ImageView) getView().findViewById(R.id.image);
+        String fileName = Uri.parse(imageURL).getLastPathSegment();
+
         //add the image
-        if(new File(ctx.getCacheDir(), fileName).exists()){
+    /*    if(new File(ctx.getCacheDir(), fileName).exists()){
             //get image from cache and set
+           File pic = new File(ctx.getCacheDir(), fileName);
+            System.out.println("Image exists in cache");
+            FileInputStream in = new FileInputStream(pic);
+            Bitmap bm = BitmapFactory.decodeStream(in);
+
+            weatherImg.setImageBitmap(bm);
+           // weatherImg.setImageURI(Uri.fromFile(pic));
+            System.out.println("Pic file path is " + pic.getAbsolutePath());
+            System.out.println("Pic file name is " + pic.getName());
+
         }
-        else{
+        else{*/
             //download the image and put it in the view
         // show The Image in a ImageView
         new DownloadImageTask(weatherImg, ctx)
                 .execute(imageURL);
-        }
+       // }
 
     }
 
+    public void geoIntent(Uri field){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(field);
+        if(intent.resolveActivity(ctx.getPackageManager()) != null)
+            startActivity(intent);
+    }
 
 }

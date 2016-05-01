@@ -23,7 +23,7 @@ Project Requirements:
     <li><strike>Maintain the user's unit preference and recent zip codes between sessions using SharedPreferences.</strike></li>
 <li>Give the user more feedback:
     <ul>
-        <li>Generate an implicit intent when the user clicks on the Current Location (a GEO intent)</li>
+        <li><strike>Generate an implicit intent when the user clicks on the Current Location (a GEO intent)</strike></li>
         <li>Generate notification(s) when your app downloads a weather forecast with alerts. Have the intent be an implicit intent to the link for the alert.</li>
         <li>Can generate multiple notifications if multiple alerts</li>
         <li>Generate Toast Messages when the user does something that causes an error (bad zipcode, unknown zipcode, weather not found, no internet connection etc)</li>

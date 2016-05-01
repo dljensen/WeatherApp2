@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -111,7 +112,11 @@ public class DataManager {
                 System.out.println("In Weather Listener!!!!!");
                 System.out.println("Location is " + results.location.name);
 
-                current_weather.setFields(results, units);
+                try {
+                    current_weather.setFields(results, units);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         };
 

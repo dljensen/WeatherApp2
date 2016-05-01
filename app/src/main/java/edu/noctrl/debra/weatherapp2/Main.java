@@ -22,7 +22,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
     private String[] zipsArray = new String[5]; //array for 5 zips
     private int zipIndex = 0; //index into zip array
     private SharedPreferences savedItems; // user's favorite searches
-    private boolean MODE = true; //which fragment is being looked at
+    private boolean MODE = false; //which fragment is being looked at
     private DataManager dManager;
     public AssetManager manager;
     private String curTag = "newCurrent";
@@ -56,11 +56,13 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
          dManager.setZip( zipsArray[(zipIndex + 5 - 1) % 5]);
 
         MODE = savedItems.getBoolean("mode", true); //get the saved mode, current or 7-Day
+        System.out.println("In On Create");
 
     }
     @Override
     protected void onPause(){
         super.onPause();
+        removeCurrentFrag();
 
         // get a SharedPreferences.Editor to update the zip codes
         SharedPreferences.Editor preferencesEditor = savedItems.edit();
@@ -72,6 +74,8 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         preferencesEditor.putBoolean("mode", MODE);
         preferencesEditor.apply(); // store the updated preferences
 
+        System.out.println("In On Pause");
+
     }
 
     @Override
@@ -82,6 +86,8 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         if(MODE && dManager.getZip() !=""){
                 addCurrentFrag();
         }
+        System.out.println("In On Resume");
+
 
     }
 
@@ -138,6 +144,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         trans.commit();
 
         dManager.getCoords(Main.this, cur);
+        System.out.println("In Add Current Frag");
 
     }
 
@@ -148,6 +155,7 @@ public class Main extends AppCompatActivity implements CurrentFragment.OnFragmen
         CurrentFragment curRemove = (CurrentFragment) getSupportFragmentManager().findFragmentByTag(curTag);
         trans.remove(curRemove);
         trans.commit();
+        System.out.println("In Add Remove Current Frag");
 
     }
 
