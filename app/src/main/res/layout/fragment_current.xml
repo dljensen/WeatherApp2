@@ -216,12 +216,12 @@
             android:id="@+id/conditionResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/conditionLabel"
             android:layout_alignTop="@+id/conditionLabel"
             android:layout_toEndOf="@+id/conditionLabel"
             android:layout_toRightOf="@+id/conditionLabel"
             android:padding="5dp"
-            android:text="--" />
+            android:text="--"
+            android:layout_above="@+id/visibilityLabel" />
 
         <TextView
             android:id="@+id/windResult"
