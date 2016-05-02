@@ -29,6 +29,7 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
     private DataManager dManager;
     public AssetManager manager;
     private String curTag = "newCurrent";
+    private String foreTag = "newForecast";
 
 
     @Override
@@ -65,7 +66,10 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
     @Override
     protected void onPause(){
         super.onPause();
-        removeCurrentFrag();
+
+        //remove the fragment
+        if(MODE) removeCurrentFrag();
+        else remove7Frag();
 
         // get a SharedPreferences.Editor to update the zip codes
         SharedPreferences.Editor preferencesEditor = savedItems.edit();
@@ -88,6 +92,9 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         //DISPLAY THE LAST SEARCHED ZIP CODE IF ON THE CURRENT CONDITIONS FRAGMENT
         if(MODE && dManager.getZip() !=""){
                 addCurrentFrag();
+        }
+        else if (dManager.getZip() !=""){
+            add7Frag();
         }
         System.out.println("In On Resume");
 
@@ -122,11 +129,14 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                 return true;
             case R.id.weather_current:
                 //show the project 1 activity and set the mode
+                if(!MODE) remove7Frag();
                 addCurrentFrag();
                 MODE = true;
                 return true;
             case R.id.weather_7day:
                 //show 7 Day forecast activity
+                if(MODE) removeCurrentFrag();
+                add7Frag();
                 MODE = false;
                 return true;
             case R.id.units:
@@ -167,6 +177,36 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         trans.commit();
         System.out.println("In Remove Current Frag");
 
+    }
+
+    //add the 7 day Fragment
+    public void add7Frag(){
+        if(internetAccess())  //internet is connected
+        {
+            FragmentManager fragMan = getSupportFragmentManager();
+            FragmentTransaction trans = fragMan.beginTransaction();
+            ForecastFragment forecast = ForecastFragment.newInstance("string", "string");
+            trans.add(R.id.main_layout, forecast, foreTag);
+            trans.commit();
+
+           // dManager.getCoords(Main.this, forecast);
+        }
+        else
+        {
+            //toast saying no connectivity
+            Toast.makeText(Main.this, R.string.noInternet,
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //remove the 7 frag
+    public void remove7Frag(){
+        FragmentManager fragMan = getSupportFragmentManager();
+        FragmentTransaction trans = fragMan.beginTransaction();
+        ForecastFragment forecastRemover = (ForecastFragment) getSupportFragmentManager().findFragmentByTag(foreTag);
+        trans.remove(forecastRemover);
+        trans.commit();
+        System.out.println("In Remove Forecast Frag");
     }
 
     //set up the current activity
