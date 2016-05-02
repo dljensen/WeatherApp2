@@ -235,8 +235,14 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                         dManager.setZip(zipsArray[which]);
 
                         //REMOVE OLD FRAGMENT, CREATE NEW FRAGMENT OF CURRENT WEATHER
-                        removeCurrentFrag();
-                        addCurrentFrag();
+                        if(MODE){
+                            removeCurrentFrag();
+                            addCurrentFrag();
+                        }
+                        else{
+                            remove7Frag();
+                            add7Frag();
+                        }
 
                         //put the zip in the recents set
                         zipsArray[zipIndex]=dManager.getZip();
@@ -272,8 +278,15 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                         }
                         else {
 
-                            removeCurrentFrag();
-                            addCurrentFrag();
+                            //update the current fragment
+                            if(MODE) {
+                                removeCurrentFrag();
+                                addCurrentFrag();
+                            }
+                            else{
+                                remove7Frag();
+                                add7Frag();
+                            }
 
                             //save the zip in the set
                             zipsArray[zipIndex]=dManager.getZip();
