@@ -12,12 +12,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,10 +29,13 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
     private int zipIndex = 0; //index into zip array
     private SharedPreferences savedItems; // user's favorite searches
     private boolean MODE = false; //which fragment is being looked at
+    private double MINSWIPE = 120;
     private DataManager dManager;
     public AssetManager manager;
     private String curTag = "newCurrent";
     private String foreTag = "newForecast";
+    private double prevX;
+    private double prevY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -192,7 +197,6 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         trans.remove(curRemove);
 
         trans.commit();
-        System.out.println("In Remove Current Frag");
 
     }
 
@@ -214,6 +218,19 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
             Toast.makeText(Main.this, R.string.noInternet,
                     Toast.LENGTH_SHORT).show();
         }
+    }
+    public void swapFragments(){
+        FragmentManager fragman = getSupportFragmentManager();
+        FragmentTransaction fragTrans = fragman.beginTransaction();
+      //  fragTrans.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+
+        Fragment curRemove = getSupportFragmentManager().findFragmentByTag(curTag);
+        fragTrans.remove(curRemove);
+        ForecastFragment forecast = ForecastFragment.newInstance("string", "string");
+        fragTrans.add(R.id.main_layout, forecast, curTag);
+        fragTrans.commit();
+
+      //  dManager.setData(forecast);
     }
 
     //remove the 7 frag
@@ -259,12 +276,14 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                             addCurrentFrag();
                         }
                         else{
-                            //remove7Frag();
+                           // remove7Frag();
+                            dManager.setDayIndex(0);
                             add7Frag();
+
                         }
 
                         //put the zip in the recents set
-                        zipsArray[zipIndex]=dManager.getZip();
+                       // zipsArray[zipIndex]=dManager.getZip();
                         zipIndex = (zipIndex + 1) % 5;
 
                     }
@@ -305,6 +324,7 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                             }
                             else{
                                // remove7Frag();
+                                dManager.setDayIndex(0);
                                 add7Frag();
                             }
 
@@ -376,4 +396,42 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         NetworkInfo an = cm.getActiveNetworkInfo();
         return an != null && an.isConnected();
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        int action = MotionEventCompat.getActionMasked(event);
+        switch(action) {
+            case (MotionEvent.ACTION_DOWN) :
+                prevX = event.getX();
+                prevY = event.getY();
+                return true;
+            case (MotionEvent.ACTION_UP) :
+                if(prevX - event.getX() > MINSWIPE) {
+                    //call left swipe, go to next day
+                    if(!MODE && dManager.getDayIndex() < 6)
+                    {
+                       removeFrag();
+                        dManager.setDayIndex(dManager.getDayIndex()+1);
+                       add7Frag();
+                       // swapFragments();
+
+                    }
+                }
+                else if(event.getX()-prevX > MINSWIPE){
+                    //call right swipe, go back day
+                    if(!MODE && dManager.getDayIndex()>0)
+                    {
+                      removeFrag();
+                        dManager.setDayIndex(dManager.getDayIndex()-1);
+                        add7Frag();
+                        //swapFragments();
+                        //dManager.setData(getSupportFragmentManager().findFragmentByTag(curTag));
+                    }
+                }
+                return true;
+            default :
+                return super.onTouchEvent(event);
+        }
+    }
+
 }

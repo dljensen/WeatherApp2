@@ -134,6 +134,7 @@ public class ForecastFragment extends Fragment {
         if(day.amForecast != null)  //am forecast data is occasionally null depending on time of day
         {
             timeDay.setText(day.amForecast.timeDesc);   //set day to the am desc
+            System.out.println("Forecast Details is "+ day.amForecast.details);
             amFore.setText(day.amForecast.description);
             desc.setText(day.amForecast.details);       //set the visible desc to the am as default
             desc.setBackgroundColor(0xffccffff);
@@ -142,6 +143,7 @@ public class ForecastFragment extends Fragment {
         else {
             timeDay.setText(day.pmForecast.timeDesc); //set day time to the pm desc
             desc.setText(day.pmForecast.details);     //set the visible desc to the pm as default
+            System.out.println("Forecast Details is "+ day.pmForecast.details);
             desc.setBackgroundColor(0xffb84dff);
 
         }
@@ -150,6 +152,8 @@ public class ForecastFragment extends Fragment {
         if(day.pmForecast != null)
         {
             pmFore.setText(day.pmForecast.description);
+            System.out.println("Forecast Details is "+ day.amForecast.details);
+
             setTemp(units, false, day);
         }
         amLabel.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +172,7 @@ public class ForecastFragment extends Fragment {
             public void onClick(View v) {
                 if(day.pmForecast !=null) {
                     desc.setText(day.pmForecast.details);
+                    System.out.println("Forecast Details is "+ day.pmForecast.details);
                     desc.setBackgroundColor(0xffb84dff);
                 }
 

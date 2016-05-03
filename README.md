@@ -8,7 +8,7 @@ Project Requirements:
     <ul>
         <li><strike>Look up zipcode latitude and longitude from http://craiginsdev.com/zipcodes/findzip.php?zip=60540</strike></li>
         <li><strike>Pull weather XML from weather.gov using latitude and longitude http://forecast.weather.gov/MapClick.php?lat={latitude}&lon={longitude}&unit=0&lg=english&FcstType=dwml</strike></li>
-        <li>Parse the rest of the weather xml file. See XML Breakdown for how each piece of the xml matches with eachother.</li>
+        <li><strike>Parse the rest of the weather xml file. See XML Breakdown for how each piece of the xml matches with eachother.</strike></li>
         <li>Download the weather images and save them in the app's Cache directory</li>
     </ul></li>
 <li> Add a Menu! The menu should include the following:
@@ -16,7 +16,7 @@ Project Requirements:
         <li><strike>Enter Zipcode (prompts the user for a zipcode)</strike></li>
         <li><strike>Recent Zipcodes (list of the last 5 zipcodes search)</strike></li>
         <li><strike>Current Weather (Displays the current weather -- project 1's activity)</strike></li>
-        <li>7-Day Forecast (Displays the 7 day forecast activity)</li>
+        <li><strike>7-Day Forecast (Displays the 7 day forecast activity)</strike></li>
         <li><strike>Units (allows the user to switch between metric and imperial)</strike></li>
         <li><strike>About (shows a simple dialog with some source info, like data from www.weather.gov)</strike></li>
     </ul></li>
@@ -32,7 +32,7 @@ Project Requirements:
     <ul>
         <li>For images, check the cache directory first, then download if not found</li>
         <li><strike>Convert Project 1's activity into a fragment</strike></li>
-        <li>Create a new fragment for displaying forecast information</li>
+        <li><strike>Create a new fragment for displaying forecast information</strike></li>
         <li>Transition between forecast days on user swipe action</li>
     </ul></li>
 </ol>
