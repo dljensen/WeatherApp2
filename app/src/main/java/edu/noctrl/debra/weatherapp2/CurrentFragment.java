@@ -101,21 +101,9 @@ public class CurrentFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
-    //method to write weather data to the screen
-    public void setFields(final WeatherInfo results, boolean units) throws FileNotFoundException {
-        System.out.println("In Current Set Fields");
-        //CHECK THAT THERE IS A ZIP SAVED
-        double myTemp = results.current.temperature;
-        double myDew = results.current.dewPoint;
-        double myPressure = results.current.pressure;
-        double myWindSpeed = results.current.windSpeed;
-        double myVisibility = results.current.visibility;
-        double myGust = results.current.gusts;
-
-        String imageURL = results.current.imageUrl; //get the url of the weather image
-
+    @Override
+    public void onResume(){
+        super.onResume();
         //get views
         location = (TextView) getView().findViewById(R.id.locationResult);
         time = (TextView) getView().findViewById(R.id.timeResult);
@@ -127,35 +115,46 @@ public class CurrentFragment extends Fragment {
         visibility = (TextView) getView().findViewById(R.id.visibilityResult);
         speed = (TextView) getView().findViewById(R.id.windResult);
         gust = (TextView) getView().findViewById(R.id.gustResult);
+    }
+
+    //method to write weather data to the screen
+    public void setFields(final WeatherInfo results, boolean units) throws FileNotFoundException {
+        System.out.println("In Current Set Fields");
+        //CHECK THAT THERE IS A ZIP SAVED
+        String myTemp;
+        String myDew;
+        String myPressure;
+        String myWindSpeed;
+        String myVisibility;
+        Double myGust = results.current.gusts;
+
+        String imageURL = results.current.imageUrl; //get the url of the weather image
+
+
 
         //convert to metric
         if(!units)
         {
-            myTemp = ((int)(((myTemp-32)/1.8)*100))/100.0; //convert to Celsius
-            myDew = ((int)(((myDew-32)/1.8)*100))/100.0; //convert to Celsius
-            myPressure = ((int)((myPressure*25.4)*100))/100.0; //convert to mm
-            myWindSpeed = ((int)((myWindSpeed * 1.609)*100))/100.0; //convert to km/h
-            myVisibility = ((int)((myVisibility * 1.609)*100))/100.0; //convert to km
-            temp.setText(myTemp + "\u2103");
-            dew.setText(myDew + "\u2103");
-            pressure.setText(myPressure + " mm");
-            visibility.setText(myVisibility + " km");
-            speed.setText(results.current.windDirectionStr()+ " @ " + myWindSpeed + " km/h");
+            myTemp = Double.toString(((int)(((results.current.temperature-32)/1.8)*100))/100.0)+ "\u2103"; //convert to Celsius
+            myDew = Double.toString(((int)(((results.current.dewPoint-32)/1.8)*100))/100.0) + "\u2103"; //convert to Celsius
+            myPressure = Double.toString(((int)((results.current.pressure*25.4)*100))/100.0) + " mm"; //convert to mm
+            if(Double.isNaN(results.current.windSpeed))
+                myWindSpeed ="N/A";
+            else
+            myWindSpeed = Double.toString(((int)((results.current.windSpeed * 1.609)*100))/100.0) + " km/h"; //convert to km/h
 
+            myVisibility = Double.toString(((int)((results.current.visibility * 1.609)*100))/100.0) + " km"; //convert to km
 
         }
         else {
-            myTemp = results.current.temperature;
-            myDew = results.current.dewPoint;
-            myPressure = results.current.pressure;
-            myWindSpeed = results.current.windSpeed;
-            myVisibility = results.current.visibility;
-            temp.setText(myTemp + "\u2109");
-            dew.setText(myDew + "\u2109");
-            pressure.setText(myPressure + " in");
-            visibility.setText(myVisibility + " mi");
-            speed.setText(results.current.windDirectionStr()+ " @ " + myWindSpeed + " mph");
-
+            myTemp = Double.toString(results.current.temperature) + "\u2109";
+            myDew = Double.toString(results.current.dewPoint) + "\u2109";
+            myPressure = Double.toString(results.current.pressure) + " in";
+            if(Double.isNaN(results.current.windSpeed))
+                myWindSpeed ="N/A";
+            else
+            myWindSpeed = Double.toString(results.current.windSpeed) + " mph";
+            myVisibility = Double.toString(results.current.visibility) + " mi";
         }
 
         //populate fields
@@ -167,6 +166,12 @@ public class CurrentFragment extends Fragment {
             gust.setText("N/A");
         else
             gust.setText(myGust +" knots");
+        temp.setText(myTemp);
+        dew.setText(myDew);
+        pressure.setText(myPressure);
+        visibility.setText(myVisibility);
+        speed.setText(results.current.windDirectionStr()+ " @ " + myWindSpeed);
+
 
         location.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Day"
-        android:id="@+id/textView"
+        android:id="@+id/dayResult"
         android:layout_gravity="center"
         android:layout_below="@+id/locationResult"
         android:layout_centerHorizontal="true"
@@ -36,14 +36,14 @@
             android:layout_height="100dp"
             android:id="@+id/image"
             android:gravity="center"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/dayResult"
             android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="High:"
+            android:text="High:   "
             android:id="@+id/highLabel"
             android:layout_centerVertical="true"
             android:layout_alignLeft="@+id/image"
@@ -54,11 +54,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Low:"
+            android:text="Low:   "
             android:id="@+id/lowLabel"
             android:layout_alignTop="@+id/highLabel"
-            android:layout_toRightOf="@+id/textView"
-            android:layout_toEndOf="@+id/textView"
+            android:layout_toRightOf="@+id/dayResult"
+            android:layout_toEndOf="@+id/dayResult"
             android:textColor="#0000FF" />
 
         <TextView
@@ -67,12 +67,10 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="--"
             android:id="@+id/high"
+            android:textColor="#FF0000"
             android:layout_alignTop="@+id/highLabel"
             android:layout_toRightOf="@+id/highLabel"
-            android:layout_toEndOf="@+id/highLabel"
-            android:layout_marginLeft="14dp"
-            android:layout_marginStart="14dp"
-            android:textColor="#FF0000" />
+            android:layout_toEndOf="@+id/highLabel" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -82,14 +80,14 @@
             android:id="@+id/low"
             android:textColor="#0000FF"
             android:layout_alignTop="@+id/lowLabel"
-            android:layout_alignRight="@+id/locationResult"
-            android:layout_alignEnd="@+id/locationResult" />
+            android:layout_toRightOf="@+id/lowLabel"
+            android:layout_toEndOf="@+id/lowLabel" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="ForecastAM"
+            android:text="N/A"
             android:id="@+id/forecastAM"
             android:layout_marginTop="37dp"
             android:layout_below="@+id/highLabel"
@@ -100,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Forecast PM"
+            android:text="N/A"
             android:id="@+id/forecastPM"
             android:layout_alignTop="@+id/forecastAM"
             android:layout_alignLeft="@+id/lowLabel"
@@ -112,19 +110,21 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="AM"
             android:id="@+id/am"
+            android:padding="10dp"
             android:layout_below="@+id/forecastAM"
-            android:layout_alignRight="@+id/high"
-            android:layout_alignEnd="@+id/high" />
+            android:layout_alignLeft="@+id/forecastView"
+            android:layout_alignStart="@+id/forecastView" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="PM"
-            android:id="@+id/PM"
+            android:id="@+id/pm"
             android:layout_alignTop="@+id/am"
             android:layout_toRightOf="@+id/lowLabel"
-            android:layout_toEndOf="@+id/lowLabel" />
+            android:layout_toEndOf="@+id/lowLabel"
+            android:padding="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -132,12 +132,12 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Placeholder text for the weather forecast for this section. blah blah blah blah"
             android:id="@+id/forecastView"
-            android:layout_marginTop="29dp"
+            android:padding="10dp"
             android:layout_below="@+id/am"
+            android:layout_alignRight="@+id/pm"
+            android:layout_alignEnd="@+id/pm"
             android:layout_alignLeft="@+id/forecastAM"
-            android:layout_alignStart="@+id/forecastAM"
-            android:layout_alignRight="@+id/image"
-            android:layout_alignEnd="@+id/image" />
+            android:layout_alignStart="@+id/forecastAM" />
 
     </RelativeLayout>
 </FrameLayout>

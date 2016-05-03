@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -31,7 +32,6 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
     private String curTag = "newCurrent";
     private String foreTag = "newForecast";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -46,7 +46,7 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         dManager.setUnits(savedItems.getBoolean("units", true));
 
         //ask SharedPreferences for the zip codes saved and populate the zip array
-        zipsArray[0] = savedItems.getString("0", "");
+        zipsArray[0] = savedItems.getString("0", "60540"); //default zip on initial open of the app after install
         zipsArray[1] = savedItems.getString("1", "");
         zipsArray[2] = savedItems.getString("2", "");
         zipsArray[3] = savedItems.getString("3", "");
@@ -60,7 +60,10 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
          dManager.setZip( zipsArray[(zipIndex + 5 - 1) % 5]);
 
         MODE = savedItems.getBoolean("mode", true); //get the saved mode, current or 7-Day
+        dManager.setMode(MODE);
         System.out.println("In On Create");
+        dManager.setDayIndex(0);
+
 
     }
     @Override
@@ -68,8 +71,7 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         super.onPause();
 
         //remove the fragment
-        if(MODE) removeCurrentFrag();
-        else remove7Frag();
+        removeFrag();
 
         // get a SharedPreferences.Editor to update the zip codes
         SharedPreferences.Editor preferencesEditor = savedItems.edit();
@@ -129,15 +131,19 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                 return true;
             case R.id.weather_current:
                 //show the project 1 activity and set the mode
-                if(!MODE) remove7Frag();
+               // if(!MODE) remove7Frag();
+                removeFrag();
                 addCurrentFrag();
                 MODE = true;
+                dManager.setMode(MODE);
                 return true;
             case R.id.weather_7day:
                 //show 7 Day forecast activity
-                if(MODE) removeCurrentFrag();
+                //if(MODE) removeCurrentFrag();
+                removeFrag();
                 add7Frag();
                 MODE = false;
+                dManager.setMode(MODE);
                 return true;
             case R.id.units:
                 //dialog to toggle units
@@ -157,7 +163,6 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
             CurrentFragment cur = CurrentFragment.newInstance("string", "string");
             trans.add(R.id.main_layout, cur, curTag);
             trans.commit();
-
             dManager.getCoords(Main.this, cur);
         }
         else
@@ -169,11 +174,23 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
     }
 
     //remove the current weather fragment
-    public void removeCurrentFrag(){
+  /*  public void removeCurrentFrag(){
         FragmentManager fragMan = getSupportFragmentManager();
         FragmentTransaction trans = fragMan.beginTransaction();
         CurrentFragment curRemove = (CurrentFragment) getSupportFragmentManager().findFragmentByTag(curTag);
         trans.remove(curRemove);
+        trans.commit();
+        System.out.println("In Remove Current Frag");
+
+    }*/
+
+    //remove the fragment displayed
+    public void removeFrag(){
+        FragmentManager fragMan = getSupportFragmentManager();
+        FragmentTransaction trans = fragMan.beginTransaction();
+        Fragment curRemove = getSupportFragmentManager().findFragmentByTag(curTag);
+        trans.remove(curRemove);
+
         trans.commit();
         System.out.println("In Remove Current Frag");
 
@@ -186,10 +203,10 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
             FragmentManager fragMan = getSupportFragmentManager();
             FragmentTransaction trans = fragMan.beginTransaction();
             ForecastFragment forecast = ForecastFragment.newInstance("string", "string");
-            trans.add(R.id.main_layout, forecast, foreTag);
+            trans.add(R.id.main_layout, forecast, curTag);
             trans.commit();
 
-           // dManager.getCoords(Main.this, forecast);
+            dManager.getCoords(Main.this, forecast);
         }
         else
         {
@@ -200,14 +217,14 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
     }
 
     //remove the 7 frag
-    public void remove7Frag(){
+   /* public void remove7Frag(){
         FragmentManager fragMan = getSupportFragmentManager();
         FragmentTransaction trans = fragMan.beginTransaction();
         ForecastFragment forecastRemover = (ForecastFragment) getSupportFragmentManager().findFragmentByTag(foreTag);
         trans.remove(forecastRemover);
         trans.commit();
         System.out.println("In Remove Forecast Frag");
-    }
+    }*/
 
     //set up the current activity
 
@@ -235,12 +252,14 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                         dManager.setZip(zipsArray[which]);
 
                         //REMOVE OLD FRAGMENT, CREATE NEW FRAGMENT OF CURRENT WEATHER
+                        removeFrag();
+
                         if(MODE){
-                            removeCurrentFrag();
+                            //removeCurrentFrag();
                             addCurrentFrag();
                         }
                         else{
-                            remove7Frag();
+                            //remove7Frag();
                             add7Frag();
                         }
 
@@ -277,14 +296,15 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                             enterZipDialog();
                         }
                         else {
+                            removeFrag();
 
                             //update the current fragment
                             if(MODE) {
-                                removeCurrentFrag();
+                                //removeCurrentFrag();
                                 addCurrentFrag();
                             }
                             else{
-                                remove7Frag();
+                               // remove7Frag();
                                 add7Frag();
                             }
 
@@ -318,8 +338,12 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                         preferencesEditor.apply(); // store the updated preferences
                         //REMOVE OLD FRAGMENT, CREATE NEW FRAGMENT OF CURRENT WEATHER
                         //remove old frag
-                        removeCurrentFrag();
+                      //  removeCurrentFrag();
+                        removeFrag();
+                        if(MODE)
                         addCurrentFrag();
+                        else
+                            add7Frag();
 
                     }
                 }).
@@ -333,8 +357,12 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                         preferencesEditor.putBoolean("units", false); // store current search
                         preferencesEditor.apply(); // store the updated preferences
 
-                        removeCurrentFrag();
+                        //removeCurrentFrag();
+                        removeFrag();
+                        if(MODE)
                         addCurrentFrag();
+                        else
+                            add7Frag();
                     }
                 });
         builder.show();

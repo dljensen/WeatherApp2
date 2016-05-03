@@ -1,6 +1,7 @@
 package edu.noctrl.debra.weatherapp2;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -21,46 +22,52 @@ public class DataManager {
     private boolean units = true; //boolean for units, initially true to indicate imperial mode
     private String zip; //string to store the zipcode
     private String[] coords = new String[2];
+    private boolean mode;
+    private int dayIndex=0;
 
-    public boolean getUnits()
-    {
+    public boolean getUnits() {
         return units;
     }
 
-    public void setUnits(boolean u)
-    {
+    public void setUnits(boolean u) {
         units = u;
     }
 
-    public String getZip()
-    {
+    public String getZip() {
         return zip;
     }
 
-    public void setZip(String z)
-    {
+    public void setZip(String z) {
         zip = z;
     }
 
-    public WeatherInfo getResults()
-    {
+    public WeatherInfo getResults() {
         return results;
     }
 
-    public String[] getLatLon()
-    {
+    public String[] getLatLon() {
         return coords;
     }
+
+    public boolean getMode() {
+        return mode;
+    }
+
+    public void setMode(boolean m) {
+        mode = m;
+    }
+
+    public void setDayIndex(int d){ dayIndex = d;}
+
+    public int getDayIndex(){return dayIndex;}
 
     //add the current weather fragment
 
 
-    public void getCoords(final Context ctx, final CurrentFragment frag)
-    {
+    public void getCoords(final Context ctx, final Fragment frag) {
         System.out.println("Calling get Coords and the zip is " + zip);
         final String lat_long_url = "http://craiginsdev.com/zipcodes/findzip.php?zip=" + zip;
-        Downloader<JSONObject> myDownloader = new Downloader<JSONObject>(new Downloader.DownloadListener<JSONObject>()
-        {
+        Downloader<JSONObject> myDownloader = new Downloader<JSONObject>(new Downloader.DownloadListener<JSONObject>() {
             @Override
             public JSONObject parseResponse(InputStream in) throws IOException, JSONException {
                 System.out.println("Parse response zip is " + zip);
@@ -71,7 +78,7 @@ public class DataManager {
                 //read lines from input
                 String line = br.readLine();
 
-                while(line != null){
+                while (line != null) {
                     strBuild.append(line);
                     line = br.readLine();
                 }
@@ -83,14 +90,13 @@ public class DataManager {
 
             @Override
             public void handleResult(JSONObject result) throws JSONException {
-              //try catch block to handle bad zipcodes
-               try{
+                //try catch block to handle bad zipcodes
+                try {
                     coords[0] = result.getString("latitude");
                     coords[1] = result.getString("longitude");
 
                     getData(frag);
-                }
-                catch(NullPointerException e){
+                } catch (NullPointerException e) {
                     //make a toast saying bad Zip, the zip returned no data
                     System.out.println("zip is " + zip);
                     Toast.makeText(ctx, R.string.badZipToast,
@@ -102,20 +108,30 @@ public class DataManager {
         myDownloader.execute(lat_long_url);
     }
 
-    public void getData(CurrentFragment frag)
-    {
-        final CurrentFragment current_weather = frag;
-        WeatherInfoIO.WeatherListener weatherDownloaded = new WeatherInfoIO.WeatherListener(){
+    public void getData(final Fragment frag) {
+        WeatherInfoIO.WeatherListener weatherDownloaded = new WeatherInfoIO.WeatherListener() {
             @Override
             public void handleResult(WeatherInfo res) {
                 results = res;
                 System.out.println("In Weather Listener!!!!!");
                 System.out.println("Location is " + results.location.name);
+                if (mode)
+                {
+                    CurrentFragment current_weather = (CurrentFragment) frag;
 
-                try {
-                    current_weather.setFields(results, units);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    try {
+                        current_weather.setFields(results, units);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //else call the 7Day method
+                else
+                {
+                    ForecastFragment fore = (ForecastFragment) frag;
+                    //call forecast method
+                    System.out.println("In the else statement");
+                    fore.setFields(results, units, dayIndex);
                 }
             }
         };
@@ -128,7 +144,6 @@ public class DataManager {
                 weatherDownloaded);
 
     }
-
 
 
 }
