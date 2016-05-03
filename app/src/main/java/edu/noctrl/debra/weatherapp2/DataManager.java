@@ -115,25 +115,8 @@ public class DataManager {
                 results = res;
                 System.out.println("In Weather Listener!!!!!");
                 System.out.println("Location is " + results.location.name);
-                //setData(frag);
-                if (mode)
-                {
-                    CurrentFragment current_weather = (CurrentFragment) frag;
+                setData(frag);
 
-                    try {
-                        current_weather.setFields(results, units);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                //else call the 7Day method
-                else
-                {
-                    ForecastFragment fore = (ForecastFragment) frag;
-                    //call forecast method
-                    System.out.println("In the else statement");
-                    fore.setFields(results, units, dayIndex);
-                }
             }
         };
 
@@ -164,7 +147,8 @@ public class DataManager {
             ForecastFragment fore = (ForecastFragment) frag;
             //call forecast method
             System.out.println("In the else statement");
-            fore.setFields(results, units, dayIndex);
+           // fore.setFields(results, units, dayIndex);
+            fore.setGlobals(results, units, dayIndex);
         }
     }
 

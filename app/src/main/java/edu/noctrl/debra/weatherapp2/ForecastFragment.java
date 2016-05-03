@@ -32,7 +32,11 @@ public class ForecastFragment extends Fragment {
 
     TextView location, timeDay, amFore, pmFore, desc, lowTemp, highTemp, amLabel, pmLabel;
     ImageView img;
-
+    WeatherInfo results;
+    boolean units;
+    int index;
+private boolean set = false;
+    private boolean resume = false;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -90,6 +94,7 @@ public class ForecastFragment extends Fragment {
         ctx = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
+            System.out.println("In Frag onAttach");
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -104,6 +109,7 @@ public class ForecastFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        resume = true;
         location = (TextView) getView().findViewById(R.id.locationResult);
         timeDay = (TextView) getView().findViewById(R.id.dayResult);
         amFore = (TextView) getView().findViewById(R.id.forecastAM);
@@ -114,9 +120,30 @@ public class ForecastFragment extends Fragment {
         amLabel = (TextView) getView().findViewById(R.id.am);
         pmLabel = (TextView) getView().findViewById(R.id.pm);
         img = (ImageView) getView().findViewById(R.id.image);
+        System.out.println("In on resume");
+        if(results != null) {
+            setFields();
+            set = true;
+            System.out.println("setting data in resume");
+
+        }
+
+
     }
 
-    public void setFields(final WeatherInfo results, boolean units, int index)
+    public void setGlobals( WeatherInfo r, boolean u, int i)
+    {
+        System.out.println("In set Globals");
+        results = r;
+        units = u;
+        index = i;
+        if(!set && resume) {
+            System.out.print("setting data in globals");
+            setFields();
+        }
+    }
+
+    public void setFields()
     {
         final DayForecast day = results.forecast.get(index);
 

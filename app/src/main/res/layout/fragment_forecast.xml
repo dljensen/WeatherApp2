@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="right|center_vertical">
+        android:layout_gravity="center">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,18 +84,17 @@
             android:layout_toEndOf="@+id/lowLabel" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="N/A"
             android:id="@+id/forecastAM"
-            android:layout_marginTop="37dp"
             android:layout_below="@+id/highLabel"
             android:layout_alignLeft="@+id/highLabel"
             android:layout_alignStart="@+id/highLabel" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="N/A"
@@ -113,7 +112,8 @@
             android:padding="10dp"
             android:layout_below="@+id/forecastAM"
             android:layout_alignLeft="@+id/forecastView"
-            android:layout_alignStart="@+id/forecastView" />
+            android:layout_alignStart="@+id/forecastView"
+            android:layout_marginTop="29dp" />
 
         <TextView
             android:layout_width="wrap_content"

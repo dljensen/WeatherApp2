@@ -219,18 +219,38 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                     Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void addNext7Frag(){
+        if(internetAccess())  //internet is connected
+        {
+            FragmentManager fragMan = getSupportFragmentManager();
+            FragmentTransaction trans = fragMan.beginTransaction();
+            ForecastFragment forecast = ForecastFragment.newInstance("string","string");
+            trans.add(R.id.main_layout, forecast, curTag);
+            trans.commit();
+
+            dManager.setData(forecast);
+
+        }
+        else
+        {
+            //toast saying no connectivity
+            Toast.makeText(Main.this, R.string.noInternet,
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
     public void swapFragments(){
         FragmentManager fragman = getSupportFragmentManager();
         FragmentTransaction fragTrans = fragman.beginTransaction();
       //  fragTrans.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-
         Fragment curRemove = getSupportFragmentManager().findFragmentByTag(curTag);
         fragTrans.remove(curRemove);
         ForecastFragment forecast = ForecastFragment.newInstance("string", "string");
         fragTrans.add(R.id.main_layout, forecast, curTag);
         fragTrans.commit();
 
-      //  dManager.setData(forecast);
+        //dManager.getCoords(Main.this, forecast);
+
     }
 
     //remove the 7 frag
@@ -412,8 +432,10 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                     {
                        removeFrag();
                         dManager.setDayIndex(dManager.getDayIndex()+1);
-                       add7Frag();
-                       // swapFragments();
+                       //add7Frag();
+                        //swapFragments();
+                        addNext7Frag();
+                     //   dManager.setData(getSupportFragmentManager().findFragmentByTag(curTag));
 
                     }
                 }
@@ -423,9 +445,12 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                     {
                       removeFrag();
                         dManager.setDayIndex(dManager.getDayIndex()-1);
-                        add7Frag();
-                        //swapFragments();
-                        //dManager.setData(getSupportFragmentManager().findFragmentByTag(curTag));
+                       // add7Frag();
+                       // swapFragments();
+                        addNext7Frag();
+                      //  dManager.setData(getSupportFragmentManager().findFragmentByTag(curTag));
+
+
                     }
                 }
                 return true;
