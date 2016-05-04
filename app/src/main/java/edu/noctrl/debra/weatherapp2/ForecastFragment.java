@@ -2,6 +2,8 @@ package edu.noctrl.debra.weatherapp2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 /**
  * 7Day Forecast Fragment
@@ -94,7 +100,6 @@ private boolean set = false;
         ctx = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-            System.out.println("In Frag onAttach");
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -120,25 +125,27 @@ private boolean set = false;
         amLabel = (TextView) getView().findViewById(R.id.am);
         pmLabel = (TextView) getView().findViewById(R.id.pm);
         img = (ImageView) getView().findViewById(R.id.image);
-        System.out.println("In on resume");
+
+        //set fields after the 7Day frag of the current zip has been displayed
+        //used to fix asynchronous issues
         if(results != null) {
             setFields();
             set = true;
-            System.out.println("setting data in resume");
-
         }
 
 
     }
 
+    //used to help fix asynchronous issues
+    //setGlobals will be called to set vars used by setFields
     public void setGlobals( WeatherInfo r, boolean u, int i)
     {
-        System.out.println("In set Globals");
         results = r;
         units = u;
         index = i;
+        //if the data is not already set and resume has already been called
+        //calls setFields the first time 7Day Frag is displayed with the zip
         if(!set && resume) {
-            System.out.print("setting data in globals");
             setFields();
         }
     }
@@ -151,9 +158,24 @@ private boolean set = false;
         //image
         String imgUrl = day.icon;
         String fileName = Uri.parse(imgUrl).getLastPathSegment();
-        new DownloadImageTask(img, ctx)
-                .execute(imgUrl);
+        if(new File(ctx.getCacheDir(), fileName).exists()){
+            //get image from cache and set
+            File pic = new File(ctx.getCacheDir(), fileName);
+            FileInputStream in = null;
+            try {
+                in = new FileInputStream(pic);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            Bitmap bm = BitmapFactory.decodeStream(in);
 
+            img.setImageBitmap(bm);
+
+        }
+        else {
+            new DownloadImageTask(img, ctx)
+                    .execute(imgUrl);
+        }
         //set fields
         location.setText(results.location.name);
         amLabel.setBackgroundColor(0xffccffff);
@@ -161,7 +183,6 @@ private boolean set = false;
         if(day.amForecast != null)  //am forecast data is occasionally null depending on time of day
         {
             timeDay.setText(day.amForecast.timeDesc);   //set day to the am desc
-            System.out.println("Forecast Details is "+ day.amForecast.details);
             amFore.setText(day.amForecast.description);
             desc.setText(day.amForecast.details);       //set the visible desc to the am as default
             desc.setBackgroundColor(0xffccffff);
@@ -170,7 +191,6 @@ private boolean set = false;
         else {
             timeDay.setText(day.pmForecast.timeDesc); //set day time to the pm desc
             desc.setText(day.pmForecast.details);     //set the visible desc to the pm as default
-            System.out.println("Forecast Details is "+ day.pmForecast.details);
             desc.setBackgroundColor(0xffb84dff);
 
         }
@@ -179,7 +199,6 @@ private boolean set = false;
         if(day.pmForecast != null)
         {
             pmFore.setText(day.pmForecast.description);
-            System.out.println("Forecast Details is "+ day.amForecast.details);
 
             setTemp(units, false, day);
         }
@@ -199,7 +218,6 @@ private boolean set = false;
             public void onClick(View v) {
                 if(day.pmForecast !=null) {
                     desc.setText(day.pmForecast.details);
-                    System.out.println("Forecast Details is "+ day.pmForecast.details);
                     desc.setBackgroundColor(0xffb84dff);
                 }
 

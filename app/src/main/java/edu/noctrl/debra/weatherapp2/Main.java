@@ -61,12 +61,10 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         zipIndex = savedItems.getInt("zipIndex", 0);
 
         //set zip to the most recently searched zipcode and display the current conditions fragment
-        //THIS SHOULD DISPLAY WHICHEVER FRAGMENT THEY WERE LOOKING AT LAST
          dManager.setZip( zipsArray[(zipIndex + 5 - 1) % 5]);
 
         MODE = savedItems.getBoolean("mode", true); //get the saved mode, current or 7-Day
         dManager.setMode(MODE);
-        System.out.println("In On Create");
         dManager.setDayIndex(0);
 
 
@@ -87,9 +85,6 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         preferencesEditor.putInt("zipIndex", zipIndex);
         preferencesEditor.putBoolean("mode", MODE);
         preferencesEditor.apply(); // store the updated preferences
-
-        System.out.println("In On Pause");
-
     }
 
     @Override
@@ -103,8 +98,6 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         else if (dManager.getZip() !=""){
             add7Frag();
         }
-        System.out.println("In On Resume");
-
 
     }
 
@@ -220,6 +213,7 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
         }
     }
 
+    //called when the zip has already returned a full forecast data
     public void addNext7Frag(){
         if(internetAccess())  //internet is connected
         {
@@ -239,6 +233,7 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                     Toast.LENGTH_SHORT).show();
         }
     }
+    //Swap for animations
     public void swapFragments(){
         FragmentManager fragman = getSupportFragmentManager();
         FragmentTransaction fragTrans = fragman.beginTransaction();
@@ -292,18 +287,15 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                         removeFrag();
 
                         if(MODE){
-                            //removeCurrentFrag();
                             addCurrentFrag();
                         }
                         else{
-                           // remove7Frag();
                             dManager.setDayIndex(0);
                             add7Frag();
 
                         }
 
                         //put the zip in the recents set
-                       // zipsArray[zipIndex]=dManager.getZip();
                         zipIndex = (zipIndex + 1) % 5;
 
                     }
@@ -339,11 +331,9 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
 
                             //update the current fragment
                             if(MODE) {
-                                //removeCurrentFrag();
                                 addCurrentFrag();
                             }
                             else{
-                               // remove7Frag();
                                 dManager.setDayIndex(0);
                                 add7Frag();
                             }
@@ -378,7 +368,6 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                         preferencesEditor.apply(); // store the updated preferences
                         //REMOVE OLD FRAGMENT, CREATE NEW FRAGMENT OF CURRENT WEATHER
                         //remove old frag
-                      //  removeCurrentFrag();
                         removeFrag();
                         if(MODE)
                         addCurrentFrag();
@@ -397,7 +386,6 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                         preferencesEditor.putBoolean("units", false); // store current search
                         preferencesEditor.apply(); // store the updated preferences
 
-                        //removeCurrentFrag();
                         removeFrag();
                         if(MODE)
                         addCurrentFrag();
@@ -432,11 +420,7 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                     {
                        removeFrag();
                         dManager.setDayIndex(dManager.getDayIndex()+1);
-                       //add7Frag();
-                        //swapFragments();
                         addNext7Frag();
-                     //   dManager.setData(getSupportFragmentManager().findFragmentByTag(curTag));
-
                     }
                 }
                 else if(event.getX()-prevX > MINSWIPE){
@@ -445,12 +429,7 @@ public class Main extends AppCompatActivity implements OnFragmentInteractionList
                     {
                       removeFrag();
                         dManager.setDayIndex(dManager.getDayIndex()-1);
-                       // add7Frag();
-                       // swapFragments();
                         addNext7Frag();
-                      //  dManager.setData(getSupportFragmentManager().findFragmentByTag(curTag));
-
-
                     }
                 }
                 return true;

@@ -65,12 +65,10 @@ public class DataManager {
 
 
     public void getCoords(final Context ctx, final Fragment frag) {
-        System.out.println("Calling get Coords and the zip is " + zip);
         final String lat_long_url = "http://craiginsdev.com/zipcodes/findzip.php?zip=" + zip;
         Downloader<JSONObject> myDownloader = new Downloader<JSONObject>(new Downloader.DownloadListener<JSONObject>() {
             @Override
             public JSONObject parseResponse(InputStream in) throws IOException, JSONException {
-                System.out.println("Parse response zip is " + zip);
 
 
                 StringBuilder strBuild = new StringBuilder();
@@ -98,7 +96,6 @@ public class DataManager {
                     getData(frag);
                 } catch (NullPointerException e) {
                     //make a toast saying bad Zip, the zip returned no data
-                    System.out.println("zip is " + zip);
                     Toast.makeText(ctx, R.string.badZipToast,
                             Toast.LENGTH_SHORT).show();
                 }
@@ -113,8 +110,6 @@ public class DataManager {
             @Override
             public void handleResult(WeatherInfo res) {
                 results = res;
-                System.out.println("In Weather Listener!!!!!");
-                System.out.println("Location is " + results.location.name);
                 setData(frag);
 
             }
@@ -146,8 +141,6 @@ public class DataManager {
         {
             ForecastFragment fore = (ForecastFragment) frag;
             //call forecast method
-            System.out.println("In the else statement");
-           // fore.setFields(results, units, dayIndex);
             fore.setGlobals(results, units, dayIndex);
         }
     }

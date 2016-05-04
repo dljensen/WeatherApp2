@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 
@@ -119,7 +123,6 @@ public class CurrentFragment extends Fragment {
 
     //method to write weather data to the screen
     public void setFields(final WeatherInfo results, boolean units) throws FileNotFoundException {
-        System.out.println("In Current Set Fields");
         //CHECK THAT THERE IS A ZIP SAVED
         String myTemp;
         String myDew;
@@ -189,25 +192,20 @@ public class CurrentFragment extends Fragment {
         String fileName = Uri.parse(imageURL).getLastPathSegment();
 
         //add the image
-    /*    if(new File(ctx.getCacheDir(), fileName).exists()){
+       if(new File(ctx.getCacheDir(), fileName).exists()){
             //get image from cache and set
            File pic = new File(ctx.getCacheDir(), fileName);
-            System.out.println("Image exists in cache");
             FileInputStream in = new FileInputStream(pic);
             Bitmap bm = BitmapFactory.decodeStream(in);
 
             weatherImg.setImageBitmap(bm);
-           // weatherImg.setImageURI(Uri.fromFile(pic));
-            System.out.println("Pic file path is " + pic.getAbsolutePath());
-            System.out.println("Pic file name is " + pic.getName());
-
         }
-        else{*/
+        else{
             //download the image and put it in the view
         // show The Image in a ImageView
         new DownloadImageTask(weatherImg, ctx)
                 .execute(imageURL);
-       // }
+        }
 
         //generate notifications for alerts
         if(!results.alerts.isEmpty())
