@@ -9,7 +9,7 @@ Project Requirements:
         <li><strike>Look up zipcode latitude and longitude from http://craiginsdev.com/zipcodes/findzip.php?zip=60540</strike></li>
         <li><strike>Pull weather XML from weather.gov using latitude and longitude http://forecast.weather.gov/MapClick.php?lat={latitude}&lon={longitude}&unit=0&lg=english&FcstType=dwml</strike></li>
         <li><strike>Parse the rest of the weather xml file. See XML Breakdown for how each piece of the xml matches with eachother.</strike></li>
-        <li>Download the weather images and save them in the app's Cache directory</li>
+        <li><strike>Download the weather images and save them in the app's Cache directory</strike></li>
     </ul></li>
 <li> Add a Menu! The menu should include the following:
     <ul>
@@ -30,10 +30,10 @@ Project Requirements:
     </ul></li>
 <li> Generate a GUI for the extended forecast:
     <ul>
-        <li>For images, check the cache directory first, then download if not found</li>
+        <li><strike>For images, check the cache directory first, then download if not found</strike></li>
         <li><strike>Convert Project 1's activity into a fragment</strike></li>
         <li><strike>Create a new fragment for displaying forecast information</strike></li>
-        <li>Transition between forecast days on user swipe action</li>
+        <li><strike>Transition between forecast days on user swipe action</strike></li>
     </ul></li>
 </ol>
 
